@@ -19,6 +19,6 @@ const fileSchema = new Schema({
     }
 }, {timestamps: true})
 
-const FileSchema = model("File", fileSchema)
+const FileModel = model("File", fileSchema)
 
-module.exports = FileSchema
+module.exports = FileModel
