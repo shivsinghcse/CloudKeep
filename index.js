@@ -5,7 +5,25 @@ const mongoose = require('mongoose')
 mongoose.connect(process.env.DB)
 
 const express = require('express')
+const {v4: uniqueId} = require('uuid')
+
+const multer = require('multer')
+const storage = multer.diskStorage({
+    destination: (req, file, next) => {
+        next(null, 'files/')
+    },
+    filename: (req, file, next) => {
+        const nameArray = file.originalname.split('.')
+        const extension = nameArray.pop()
+        const orignalName = nameArray.join('.')
+        const name = `${orignalName}_${uniqueId()}.${extension}`
+        next(null, name)
+    }
+})
+const upload = multer({storage: storage})
+
 const { signup, login } = require('./controller/user.controller')
+const { createFile, fetchFiles, deleteFile } = require('./controller/file.controller')
 const app = express()
 app.listen(process.env.PORT || 8080)
 
@@ -15,3 +33,6 @@ app.use(express.urlencoded({extended: false}))
 
 app.post('/signup', signup)
 app.post('/login', login)
+app.post('/file', upload.single('myFile'),createFile)
+app.get('/file', fetchFiles)
+app.delete('/file/:id', deleteFile)
