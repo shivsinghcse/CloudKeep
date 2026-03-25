@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 mongoose.connect(process.env.DB)
 
 const express = require('express')
-const { signUp } = require('./controller/user.controller')
+const { signup, login } = require('./controller/user.controller')
 const app = express()
 app.listen(process.env.PORT || 8080)
 
@@ -13,4 +13,5 @@ app.use(express.static('view'))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
-app.post('/', signUp)
+app.post('/signup', signup)
+app.post('/login', login)
