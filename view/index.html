@@ -49,14 +49,22 @@
                     >
                         Password
                     </label>
-                    <input 
-                        type="password"
-                        name="password"
-                        id="password"
-                        class="border border-gray-300 rounded p-2 w-full"
-                        required
-                        placeholder="********"
-                    />
+                    <div class="relative">
+                        <input 
+                            type="password"
+                            name="password"
+                            id="password"
+                            class="border border-gray-300 rounded p-2 w-full"
+                            required
+                            placeholder="********"
+                        />
+                        <button 
+                            onclick="togglePassword()"
+                            type="button" 
+                            class="absolute right-4 top-1  h-8 w-8 hover:bg-gray-200 hover:cursor-pointer rounded-full transition">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <button class="bg-violet-500 rounded p-2 w-full text-white font-medium hover:bg-violet-600">Sign in</button>
