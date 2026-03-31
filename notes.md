@@ -42,4 +42,6 @@ const fileDownload = async (req, res) => {
         res.status(500).json({message: err.message})
     }
 }
-```    
+```
+- for smaller range project we will create api for dashboard     
+- we did not create model for dashboard
