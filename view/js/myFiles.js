@@ -15,3 +15,15 @@ const toggleDrawer = () => {
     }
     
 }
+
+const passwordEle = document.querySelector('#password')
+
+const togglePassword = (btn) => {
+    if(passwordEle.type === 'password'){
+        passwordEle.type = 'text'
+        btn.innerHTML = `<i class="ri-eye-off-line"></i>`
+    } else {
+        passwordEle.type = 'password'
+        btn.innerHTML = `<i class="ri-eye-line"></i>`
+    }
+}
