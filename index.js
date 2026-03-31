@@ -23,7 +23,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage: storage})
 
 const { signup, login } = require('./controller/user.controller')
-const { createFile, fetchFiles, deleteFile } = require('./controller/file.controller')
+const { createFile, fetchFiles, deleteFile, fileDownload } = require('./controller/file.controller')
 const app = express()
 app.listen(process.env.PORT || 8080)
 
@@ -36,3 +36,4 @@ app.post('/login', login)
 app.post('/file', upload.single('myFile'),createFile)
 app.get('/file', fetchFiles)
 app.delete('/file/:id', deleteFile)
+app.get('/file/download/:id', fileDownload)
