@@ -14,6 +14,9 @@
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 </head>
 <body>
     <div class="bg-gray-200 min-h-screen flex items-center justify-center animate__animated animate_fadeIn">
@@ -24,7 +27,7 @@
                 <h1 class="text-3xl font-semibold">Cloud<span class="text-violet-600">Keep</span></h1>
             </div>
 
-            <form class="flex flex-col gap-6">
+            <form class="flex flex-col gap-6" onsubmit="signup(event)">
 
                 <div class="space-y-1">
                     <label 
@@ -112,5 +115,7 @@
             </div>
         </div>
     </div>
+
+    <script src="./js/signup.js"></script>
 </body>
 </html>
