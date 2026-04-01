@@ -724,3 +724,356 @@ import.meta.env.VITE_SERVER
 ---
 
 
+# 🔥 Day 30 – Protecting Pages using JWT
+
+---
+
+# 🔐 1. What is Authentication?
+
+---
+
+### 📌 Definition:
+
+Authentication means **verifying who the user is**
+
+👉 Example:
+
+* Login with email & password
+
+---
+
+# 🔑 2. What is Authorization?
+
+---
+
+### 📌 Definition:
+
+Authorization means **what user is allowed to access**
+
+👉 Example:
+
+* Only logged-in users can access dashboard
+
+---
+
+# 🧠 3. Why Protect Pages?
+
+---
+
+### 📌 Without Protection:
+
+```text
+Anyone can access /dashboard ❌
+```
+
+---
+
+### ✅ With Protection:
+
+```text
+Only valid users with token can access ✔️
+```
+
+---
+
+# 🎟️ 4. What is JWT (JSON Web Token)?
+
+---
+
+### 📌 Definition:
+
+A **JWT** is a secure token used to verify users.
+
+---
+
+### 🧠 Important Points:
+
+* Token = meaningless encoded string
+* Contains user info (payload)
+* Has expiry time
+* Verified using **secret key**
+
+---
+
+### 🔄 Flow:
+
+```text
+Login → Generate Token → Send to Client
+Client → Store Token → Send with Request
+Server → Verify Token → Allow / Deny
+```
+
+---
+
+# 🔐 5. Secret Key
+
+---
+
+### 📌 Definition:
+
+A private key used to **sign and verify token**
+
+---
+
+### ⚠️ Rule:
+
+👉 NEVER share it ❌
+👉 Store in `.env` ✔️
+
+---
+
+### ✅ Generate Secret Key:
+
+```js
+require("crypto").randomBytes(32).toString("hex")
+```
+
+---
+
+# ⚛️ 6. Install JWT
+
+---
+
+```bash
+npm install jsonwebtoken
+```
+
+---
+
+# 🧾 7. Generate Token (Backend)
+
+---
+
+### 📌 Rule:
+
+Never include password in token ❌
+
+---
+
+### ✅ Example:
+
+```js
+import jwt from "jsonwebtoken"
+
+const payload = {
+  id: user._id,
+  email: user.email,
+  fullname: user.fullname
+}
+
+const token = jwt.sign(payload, process.env.JWT_SECRET, {
+  expiresIn: "7d"
+})
+```
+
+---
+
+### 🧠 Output:
+
+👉 Encoded string like:
+
+```text
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+---
+
+# 💾 8. Store Token (Frontend)
+
+---
+
+### 📌 Using LocalStorage:
+
+```js
+localStorage.setItem("token", token)
+```
+
+---
+
+### 📌 Methods:
+
+| Method     | Use        |
+| ---------- | ---------- |
+| setItem    | Save data  |
+| getItem    | Get data   |
+| removeItem | Remove one |
+| clear      | Remove all |
+
+---
+
+### ⚠️ Note:
+
+👉 LocalStorage stores only **string**
+
+---
+
+# 🌐 9. Send Token with Request
+
+---
+
+### 📌 Using Axios:
+
+```js
+axios.get("/profile", {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("token")}`
+  }
+})
+```
+
+---
+
+# 🛡️ 10. Verify Token (Backend Middleware)
+
+---
+
+### 📌 Middleware = function that runs before API
+
+---
+
+## ✅ Example:
+
+```js
+import jwt from "jsonwebtoken"
+
+const authMiddleware = (req, res, next) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1]
+
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized" })
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+    req.user = decoded
+    next()
+  } catch (err) {
+    res.status(401).json({ message: "Invalid token" })
+  }
+}
+```
+
+---
+
+# 🔒 11. Protect Routes
+
+---
+
+```js
+app.get("/dashboard", authMiddleware, (req, res) => {
+  res.json({ message: "Welcome", user: req.user })
+})
+```
+
+---
+
+# ⚛️ 12. Protect Frontend Pages
+
+---
+
+## 📌 Example (React):
+
+```jsx
+const token = localStorage.getItem("token")
+
+if (!token) {
+  return <Navigate to="/login" />
+}
+```
+
+---
+
+# 🔄 13. Logout System
+
+---
+
+```js
+localStorage.removeItem("token")
+```
+
+---
+
+---
+
+# ⚠️ 14. Security Best Practices
+
+---
+
+### ✅ Always:
+
+* Store secret in `.env`
+* Set token expiry
+* Use HTTPS
+* Validate token on backend
+
+---
+
+### ❌ Never:
+
+* Store password in token ❌
+* Expose secret key ❌
+* Trust frontend only ❌
+
+---
+
+# ⚡ 15. Advanced Concepts
+
+---
+
+## 🔹 1. Refresh Token
+
+* Short-lived access token
+* Long-lived refresh token
+
+---
+
+## 🔹 2. Role-Based Access
+
+```js
+if (req.user.role !== "admin") {
+  return res.status(403)
+}
+```
+
+---
+
+## 🔹 3. Token Expiry Handling
+
+```js
+jwt.sign(payload, secret, { expiresIn: "7d" })
+```
+
+---
+
+# ❌ 16. Common Mistakes
+
+---
+
+### ❌ Not verifying token
+
+---
+
+### ❌ Hardcoding secret key
+
+---
+
+### ❌ Not sending token in headers
+
+---
+
+### ❌ Storing sensitive data in token
+
+---
+
+# 🧠 Final Summary
+
+* JWT secures frontend + backend
+* Token generated at login
+* Stored in localStorage
+* Sent with every request
+* Verified using secret key
+* Middleware protects routes
+
+---
+

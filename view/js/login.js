@@ -16,7 +16,9 @@ const login = async (e) => {
         const response = await axios.post('/login', payload)
         form.reset()
         Toast.success(`${response.data.message} - Please wait while we are redirecting you...`)
+        console.log(response);
 
+        localStorage.setItem('authToken', response.data.token)
         setTimeout(()=>{
             location.href = '../app/dashboard.html'
         }, 2000)
