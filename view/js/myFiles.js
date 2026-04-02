@@ -1,6 +1,7 @@
-axios.defults.baseURL = SERVER
+axios.defaults.baseURL = SERVER
 window.onload = function () {
     fetchFiles()
+    console.log("hello", SERVER);
 }
 
 const Toast = new Notyf({
