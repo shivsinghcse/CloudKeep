@@ -1,10 +1,24 @@
+const session = getSession()
+
+session
+.then((data) => {
+    if(!data)
+    {
+        location.href = 'login'
+    }
+})
+.catch((err) => {
+    console.log(err);
+})
+
+
 // const session = getSession()
 
 // session
 // .then((data) => {
 //     if(!data)
 //     {
-//         location.href = '../index.html'
+//         location.href = 'login'
 //     }
 // })
 // .catch((err) => {
