@@ -1,6 +1,8 @@
 
 const Toast = new Notyf({
-    position: {x: 'center', y: 'top'}
+    position: {x: 'center', y: 'top'},
+    duration: 2000
+
 })
 
 
@@ -9,16 +11,27 @@ const uploadFile = async (e) => {
     {
         e.preventDefault()
         const form = e.target
+        const progressbar = document.getElementById('progressbar')
         const formdata = new FormData(form)
-        const {data} = await axios.post('/api/file', formdata)
-        console.log(data);
-        alert('File uploaded successfully.')
+        
+        const options = {
+            onUploadProgress: (e) => {
+                const loaded = e.loaded
+                const total = e.total
+                const percentageValue = Math.floor((loaded*100)/total)
+                progressbar.style.width = percentageValue+'%'
+                progressbar.innerHTML = percentageValue+'%'
+            }
+        }
+        await axios.post('/api/file', formdata, options)
+        Toast.success(`File uploaded!`)
+        progressbar.style.width = 0
+        progressbar.innerHTML = ''
         form.reset()
-        // Toast.success('File uploaded successfully.')
+        toggleDrawer()
     }
     catch(err)
     {
-        console.log(err);
-        // Toast.error('Failed')
+        Toast.error('Failed!')
     }
 }

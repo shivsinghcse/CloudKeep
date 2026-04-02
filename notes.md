@@ -18,6 +18,7 @@
 # Day-33
 - form => file + input follow Content-Type: multipart/form-data
 - create instance of formDate()
+- how to count percentage of uploading file
 # Day-41 AWS
 - AWS (Amazon web services)
 - we generally deploy node.js project on cloud
