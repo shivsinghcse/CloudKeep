@@ -1,3 +1,5 @@
+// axios.defaults.baseURL = 'http://localhost:8080'
+
 const getSession = async () => {
     try
     {

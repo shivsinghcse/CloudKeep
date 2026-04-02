@@ -1,15 +1,3 @@
-const session = getSession()
-
-session
-.then((data) => {
-    if(!data)
-    {
-        location.href = 'login'
-    }
-})
-.catch((err) => {
-    console.log(err);
-})
 
 const Toast = new Notyf({
     position: {x: 'center', y: 'top'}
