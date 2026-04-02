@@ -1,7 +1,7 @@
 axios.defaults.baseURL = SERVER
+
 window.onload = function () {
     fetchFiles()
-    console.log("hello", SERVER);
 }
 
 const Toast = new Notyf({
@@ -64,7 +64,7 @@ const fetchFiles = async () => {
                             <i class="ri-delete-bin-4-line"></i>
                         </button>
 
-                        <button onclick="downloadFile('${file._id}')" class="bg-green-400 hover:bg-green-600 text-white rounded hover:cursor-pointer px-2 py-1">
+                        <button onclick="downloadFile('${file._id}', '${file.filename}')" class="bg-green-400 hover:bg-green-600 text-white rounded hover:cursor-pointer px-2 py-1">
                             <i class="ri-download-line"></i>
                         </button>
 
@@ -99,7 +99,7 @@ const deleteFile = async (id) => {
    }
 }
 
-const downloadFile = async (id) => {
+const downloadFile = async (id, filename) => {
    try
    {
         const {data} = await axios.get(`/api/file/download/${id}`, {
@@ -111,11 +111,12 @@ const downloadFile = async (id) => {
         const link = document.createElement('a')
         link.href = url
 
-        link.setAttribute('download', 'file')    
+        const ext = data.type.split('/').pop()
+        const name = `${filename}.${ext}` 
+        link.setAttribute('download', name)    
 
         document.body.appendChild(link);
         link.click()
-        console.log(data);
 
         link.remove()
         URL.revokeObjectURL(url)
