@@ -4,9 +4,12 @@ dotenv.config()
 const mongoose = require('mongoose')  
 mongoose.connect(process.env.DB)
 
+const root = process.cwd()
 const express = require('express')
+const path = require('path')
 const cors = require('cors')
 const {v4: uniqueId} = require('uuid')
+// console.log(path.join(root, 'view', 'signup.html'));
 
 const multer = require('multer')
 const storage = multer.diskStorage({
@@ -37,11 +40,74 @@ app.use(express.static('view'))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
-app.post('/signup', signup)
-app.post('/login', login)
-app.post('/file', upload.single('myFile'),createFile)
-app.get('/file', fetchFiles)
-app.delete('/file/:id', deleteFile)
-app.get('/file/download/:id', fileDownload)
-app.get('/dashboard', fetchDashboard)
-app.post('/token/verify', verifyToken)
+// UI endpoint
+const getPth = (filename) => {
+    return path.join(root, 'view', filename)
+}
+
+app.get('/', (req, res) => {
+    res.sendFile(getPth('index.html'), (err) => {
+        if(err)
+        {
+            res.send('404 | Page not found')
+        }
+    })
+})
+
+app.get('/login', (req, res) => {
+    res.sendFile(getPth('index.html'), (err) => {
+        if(err)
+        {
+            res.send('404 | Page not found')
+        }
+    })
+})
+
+app.get('/signup', (req, res) => {
+    res.sendFile(getPth('signup.html'), (err) => {
+        if(err)
+        {
+            res.send('404 | Page not found')
+        }
+    })
+})
+
+app.get('/dashboard', (req, res) => {
+    res.sendFile(getPth('app/dashboard.html'), (err) => {
+        if(err)
+        {
+            res.send('404 | Page not found')
+        }
+    })
+})
+
+app.get('/files', (req, res) => {
+    res.sendFile(getPth('app/files.html'), (err) => {
+        if(err)
+        {
+            res.send('404 | Page not found')
+        }
+    })
+})
+
+app.get('/history', (req, res) => {
+    res.sendFile(getPth('app/history.html'), (err) => {
+        if(err)
+        {
+            res.send('404 | Page not found')
+        }
+    })
+})
+
+
+
+// API endpoint
+
+app.post('/api/signup', signup)
+app.post('/api/login', login)
+app.post('/api/file', upload.single('myFile'),createFile)
+app.get('/api/file', fetchFiles)
+app.delete('/api/file/:id', deleteFile)
+app.get('/api/file/download/:id', fileDownload)
+app.get('/api/dashboard', fetchDashboard)
+app.post('/api/token/verify', verifyToken)

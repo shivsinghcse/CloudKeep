@@ -29,28 +29,28 @@
             </div>
 
             <div class="px-6 flex flex-col gap-4">
-                <a href="./dashboard.html">
+                <a href="dashboard">
                     <button class="w-full bg-rose-400 text-white py-2.5 rounded hover:bg-rose-600">
                         <i class="ri-apps-line"></i>
                         <label>Dashboard</label>
                     </button>
                 </a>
 
-                <a href="./myFiles.html">
+                <a href="files">
                     <button class="w-full bg-rose-400 text-white py-2.5 rounded hover:bg-rose-600">
                         <i class="ri-file-line"></i>
                         <label>My Files</label>
                     </button>
                 </a>
 
-                <a href="./history.html">
+                <a href="history">
                     <button class="w-full bg-rose-400 text-white py-2.5 rounded hover:bg-rose-600">
                         <i class="ri-file-history-line"></i>
                         <label>History</label>
                     </button>
                 </a>
 
-                <button class="w-full bg-rose-400 text-white py-2.5 rounded hover:bg-rose-600">
+                <button onclick="logout()" class="w-full bg-rose-400 text-white py-2.5 rounded hover:bg-rose-600">
                         <i class="ri-logout-circle-r-line"></i>
                         <label>Logout</label>
                 </button>
@@ -67,7 +67,7 @@
                 </div>
 
                 <div class="space-x-2">
-                    <button onclick="" class=" bg-gray-100 px-3 p-2 hover:cursor-pointer hover:bg-gray-200 rounded">
+                    <button onclick="logout()" class=" bg-gray-100 px-3 p-2 hover:cursor-pointer hover:bg-gray-200 rounded">
                         <i class="ri-logout-circle-r-line"></i>
                     </button>
 
@@ -159,6 +159,7 @@
         </section>
     </div>
 
+    <script src="../js/session.js"></script>
     <script src="../js/layout.js"></script>
     <script src="../js/myFiles.js"></script>
 </body>

@@ -11,7 +11,7 @@ const getSession = async () => {
             token: session
         }
 
-        const {data} = await axios.post('/token/verify', payload)
+        const {data} = await axios.post('/api/token/verify', payload)
         return data
         
     }
@@ -21,5 +21,7 @@ const getSession = async () => {
     }
 }
 
-
-
+const logout = () => {
+    localStorage.clear()
+    location.href = '/login'
+}

@@ -1,3 +1,7 @@
+const Toast = new Notyf({
+    position: {x: 'center', y: 'top'}
+})
+
 const drawer = document.querySelector('#drawer');
 
 const toggleDrawer = () => {
@@ -16,14 +20,21 @@ const toggleDrawer = () => {
     
 }
 
-const passwordEle = document.querySelector('#password')
 
-const togglePassword = (btn) => {
-    if(passwordEle.type === 'password'){
-        passwordEle.type = 'text'
-        btn.innerHTML = `<i class="ri-eye-off-line"></i>`
-    } else {
-        passwordEle.type = 'password'
-        btn.innerHTML = `<i class="ri-eye-line"></i>`
+const uploadFile = async (e) => {
+    try
+    {
+        e.preventDefault()
+        const form = e.target
+        const formData = new FormData(form)
+        const {data} = await axios.post('/api/file', formData)
+        console.log(data);
+        Toast.success('File uploaded successfully')
+        // form.reset()
+        
+    }
+    catch(err)
+    {
+        Toast.error('File uploaded Failed')
     }
 }
