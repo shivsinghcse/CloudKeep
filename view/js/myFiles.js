@@ -49,14 +49,13 @@ const fetchFiles = async () => {
     {
         const tbody = document.getElementById('tbody')
         const {data} = await axios.get('/api/file')
-        console.log(data);
         let ui = ''
         data.forEach(file => {
             const row = `<tr class="text-gray-500 border-b border-gray-100">
                 <td class="py-4 pl-6 capitalize">${file.filename}</td>
                 <td class="capitalize">${file.type}</td>
                 <td>${(file.size/(1024*1024)).toFixed(1)}Mb</td>
-                <td>${moment(file.createdAt).format('DD MMM YYYY')}</td>
+                <td>${moment(file.createdAt).format('DD MMM YYYY hh:mm:ss A')}</td>
                 <td>
                     <div class="space-x-2">
                         <button onclick="deleteFile('${file._id}')" class="bg-rose-400 hover:bg-rose-600 text-white rounded hover:cursor-pointer px-2 py-1">
@@ -91,7 +90,9 @@ const deleteFile = async (id) => {
      fetchFiles()
    }
    catch(err){
-    //  console.log(err.response ? err.response.data.message : err.message);
+     console.log(err.response ? err.response.data.message : err.message);
+     console.log(err.message);
+     console.log(err);
      Toast.error(`Delete Failed!`)
    }
 }
