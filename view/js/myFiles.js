@@ -120,10 +120,16 @@ const downloadFile = async (id, filename) => {
 
         link.remove()
         URL.revokeObjectURL(url)
-Toast.success(`File downloaded!`)
+        Toast.success(`File downloaded!`)
    }
    catch(err){
-        console.log(err.response ? err.response.data.message : err.message);
-        Toast.error(`Download Failed!`)
-   }
+       if(!err.response)
+        {
+            return Toast.error(err.message)
+        } 
+        
+        const error = await (err?.response?.data)?.text()
+        const {message} = JSON.parse(error)
+        Toast.error(message)
+    }
 }
