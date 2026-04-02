@@ -22,7 +22,10 @@
 - query mutation - live update
 
 # Day-35
-
+- nodemailer : used for sending mails used in smaleer range app only max 10k/month 
+- 50k/month mail, purchase smtp servers provided by many companies like sendgrid, msg91, mailchimp
+- more than 50k/month use AWS SES (can use only pvt. ltd, llc)
+- SMTP
 # Day-41 AWS
 - AWS (Amazon web services)
 - we generally deploy node.js project on cloud
