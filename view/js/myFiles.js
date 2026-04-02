@@ -38,7 +38,6 @@ const uploadFile = async (e) => {
         uploadButton.disabled = true
         await axios.post('/api/file', formdata, options)
         Toast.success(`File uploaded!`)
-        uploadButton.disabled = false
         progressbar.style.width = 0
         progressbar.innerHTML = ''
         form.reset()
@@ -48,6 +47,9 @@ const uploadFile = async (e) => {
     catch(err)
     {
         Toast.error('Upload Failed')
+    }
+    finally{
+        uploadButton.disabled = false
     }
 }
 
@@ -65,11 +67,11 @@ const fetchFiles = async () => {
                 <td>${moment(file.createdAt).format('DD MMM YYYY hh:mm:ss A')}</td>
                 <td>
                     <div class="space-x-2">
-                        <button onclick="deleteFile('${file._id}')" class="bg-rose-400 hover:bg-rose-600 text-white rounded hover:cursor-pointer px-2 py-1">
+                        <button onclick="deleteFile('${file._id}', this)" class="bg-rose-400 hover:bg-rose-600 text-white rounded hover:cursor-pointer px-2 py-1">
                             <i class="ri-delete-bin-4-line"></i>
                         </button>
 
-                        <button onclick="downloadFile('${file._id}', '${file.filename}')" class="bg-green-400 hover:bg-green-600 text-white rounded hover:cursor-pointer px-2 py-1">
+                        <button onclick="downloadFile('${file._id}', '${file.filename}', this)" class="bg-green-400 hover:bg-green-600 text-white rounded hover:cursor-pointer px-2 py-1">
                             <i class="ri-download-line"></i>
                         </button>
 
@@ -89,9 +91,11 @@ const fetchFiles = async () => {
     }
 }
 
-const deleteFile = async (id) => {
+const deleteFile = async (id, button) => {
    try
    {
+     button.innerHTML = `<i class="fa fa-spinner fa-spin"></i>`
+     button.disabled = true
      await axios.delete(`/api/file/${id}`)
      Toast.success(`File deleted!`)
      fetchFiles()
@@ -102,11 +106,19 @@ const deleteFile = async (id) => {
      console.log(err);
      Toast.error(`Delete Failed!`)
    }
+   finally
+    {
+        button.innerHTML = `<i class="ri-download-line"></i>`
+        button.disabled = false
+    }
 }
 
-const downloadFile = async (id, filename) => {
+const downloadFile = async (id, filename, button) => {
    try
    {
+        button.innerHTML = `<i class="fa fa-spinner fa-spin"></i>`
+        button.disabled = true
+        
         const {data} = await axios.get(`/api/file/download/${id}`, {
             responseType: 'blob'
             })
@@ -136,5 +148,10 @@ const downloadFile = async (id, filename) => {
         const error = await (err?.response?.data)?.text()
         const {message} = JSON.parse(error)
         Toast.error(message)
+    }
+    finally
+    {
+        button.innerHTML = `<i class="ri-download-line"></i>`
+        button.disabled = false
     }
 }
