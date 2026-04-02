@@ -1,3 +1,4 @@
+axios.defults.baseURL = SERVER
 window.onload = function () {
     fetchFiles()
 }
@@ -97,16 +98,30 @@ const deleteFile = async (id) => {
    }
 }
 
-// const downloadFile = async (id) => {
-//    try
-//    {
-//      const {data} = await axios.get(`/api/file/download/${id}`)
-//      console.log(data);
-//     //  Toast.success(`File downloaded!`)
-//     //  fetchFiles()
-//    }
-//    catch(err){
-//      console.log(err.response ? err.response.data.message : err.message);
-//      Toast.error(`Download Failed!`)
-//    }
-// }
+const downloadFile = async (id) => {
+   try
+   {
+        const {data} = await axios.get(`/api/file/download/${id}`, {
+            responseType: 'blob'
+            })
+
+        const url = URL.createObjectURL(data)
+
+        const link = document.createElement('a')
+        link.href = url
+
+        link.setAttribute('download', 'file')    
+
+        document.body.appendChild(link);
+        link.click()
+        console.log(data);
+
+        link.remove()
+        URL.revokeObjectURL(url)
+Toast.success(`File downloaded!`)
+   }
+   catch(err){
+        console.log(err.response ? err.response.data.message : err.message);
+        Toast.error(`Download Failed!`)
+   }
+}

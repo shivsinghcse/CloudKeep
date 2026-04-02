@@ -19,6 +19,7 @@
 - form => file + input follow Content-Type: multipart/form-data
 - create instance of formDate()
 - how to count percentage of uploading file
+- query mutation - live update
 # Day-41 AWS
 - AWS (Amazon web services)
 - we generally deploy node.js project on cloud
