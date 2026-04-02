@@ -15,6 +15,9 @@
 - monolithic archi.  : ui ,model, controller, api
 - template engine
 
+# Day-33
+- form => file + input follow Content-Type: multipart/form-data
+- create instance of formDate()
 # Day-41 AWS
 - AWS (Amazon web services)
 - we generally deploy node.js project on cloud

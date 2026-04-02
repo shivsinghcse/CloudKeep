@@ -9,15 +9,16 @@ const uploadFile = async (e) => {
     {
         e.preventDefault()
         const form = e.target
-        const formData = new FormData(form)
-        const {data} = await axios.post('/api/file', formData)
+        const formdata = new FormData(form)
+        const {data} = await axios.post('/api/file', formdata)
         console.log(data);
-        Toast.success('File uploaded successfully')
-        // form.reset()
-        
+        alert('File uploaded successfully.')
+        form.reset()
+        // Toast.success('File uploaded successfully.')
     }
     catch(err)
     {
-        Toast.error('File uploaded Failed')
+        console.log(err);
+        // Toast.error('Failed')
     }
 }
