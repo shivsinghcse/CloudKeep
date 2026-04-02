@@ -19,6 +19,11 @@ const uploadFile = async (e) => {
         const progressbar = document.getElementById('progressbar')
         const uploadButton = document.getElementById('upload-btn')
         const formdata = new FormData(form)
+
+        const file = formdata.get('myFile')
+        const size = ((file.size / 1024)/1024).toFixed(1)
+        if(size > 200)
+            return Toast.error('File is too large max size 200Mb allowed')
         
         const options = {
             onUploadProgress: (e) => {
