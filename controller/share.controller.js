@@ -10,7 +10,7 @@ const conn = nodemailer.createTransport({
     }
 })
 
-const getEmailTemplate = (link) => {
+const getEmailTemplate = (link, filename, ext, size) => {
     return `<!DOCTYPE html>
         <html>
         <head>
@@ -39,7 +39,7 @@ const getEmailTemplate = (link) => {
                             <tr>
                                 <td style="padding:30px; color:#333333; font-size:15px; line-height:1.6;">
                                     
-                                    <p style="margin:0 0 15px;">Hello,</p>
+                                    <p style="margin:0 0 15px;">Hi,</p>
 
                                     <p style="margin:0 0 15px;">
                                         You've received a file via <strong>CloudKeep</strong>. Click the button below to securely download your file.
@@ -47,8 +47,8 @@ const getEmailTemplate = (link) => {
 
                                     <!-- File Info -->
                                     <div style="background-color:#f9fafb; padding:15px; border-radius:8px; margin-bottom:20px; border:1px solid #e5e7eb;">
-                                        <p style="margin:0;"><strong>📄 File Name:</strong> {{FILE_NAME}}</p>
-                                        <p style="margin:6px 0 0;"><strong>📦 File Size:</strong> {{FILE_SIZE}}</p>
+                                        <p style="margin:0;"><strong>📄 File Name:</strong> ${filename}.${ext}</p>
+                                        <p style="margin:6px 0 0;"><strong>📦 File Size:</strong> ${(size/(1024*1024)).toFixed(1)} Mb</p>
                                     </div>
 
                                     <!-- Download Button -->
@@ -102,14 +102,14 @@ const getEmailTemplate = (link) => {
 const shareFile = async (req, res) => {
     try
     {
-        const {email, fileId} =req.body
+        const {email, fileId, ext, filename, size} =req.body
         const link = `${process.env.SERVER}/api/file/download/${fileId}`
         
         const options = {
             from: process.env.SMTP_EMAIL,
             to: email,
-            subject: '☁️ CloudKeep: just sent you a file',
-            html: getEmailTemplate(link)
+            subject: '☁️ CloudKeep: Just sent you a file',
+            html: getEmailTemplate(link, filename, ext,  size)
         }
 
         await conn.sendMail(options)

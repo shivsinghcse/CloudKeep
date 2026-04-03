@@ -118,3 +118,9 @@ app.get('/api/file/download/:id', fileDownload)
 app.get('/api/dashboard', fetchDashboard)
 app.post('/api/token/verify', verifyToken)
 app.post('/api/share', shareFile)
+
+
+// endpoint Not found
+app.use((req, res) => {
+    res.status(404).json({message: 'Endpoint not found !'})
+})

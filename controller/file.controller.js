@@ -6,12 +6,11 @@ const createFile = async (req, res) => {
     try
     {
         const file = req.file
-        console.log(file);
         const {filename} = req.body
         const payload = {
             path: (file.destination+file.filename),
             filename: filename,
-            type: file.mimetype.split('/')[1],
+            type: file.originalname.split('.').pop(),
             size: file.size
         }
 
@@ -60,7 +59,6 @@ const fileDownload = async (req, res) => {
     {
         const {id} = req.params
         const file = await FileModel.findById(id)
-
         if(!file)
         {
             return res.status(404).json({message: 'File not found'})
@@ -69,7 +67,7 @@ const fileDownload = async (req, res) => {
         const root = process.cwd()
         const filePath = path.join(root, file.path)
 
-        res.setHeader('Content-Disposition', `attachment; filename="${file.filename}"`)
+        res.setHeader('Content-Disposition', `attachment; filename="${file.filename}.${file.type}"`)
         // res.setHeader('Content-Type', 'image/png')
         
         res.sendFile(filePath, (err) => {

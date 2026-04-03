@@ -49,6 +49,7 @@ const uploadFile = async (e) => {
         Toast.error('Upload Failed')
     }
     finally{
+        const uploadButton = document.getElementById('upload-btn')
         uploadButton.disabled = false
     }
 }
@@ -62,7 +63,7 @@ const fetchFiles = async () => {
         data.forEach(file => {
             const row = `<tr class="text-gray-500 border-b border-gray-100">
                 <td class="py-4 pl-6 capitalize">${file.filename}</td>
-                <td class="capitalize">${file.type}</td>
+                <td class="uppercase">${file.type}</td>
                 <td>${(file.size/(1024*1024)).toFixed(1)}Mb</td>
                 <td>${moment(file.createdAt).format('DD MMM YYYY hh:mm:ss A')}</td>
                 <td>
@@ -75,7 +76,7 @@ const fetchFiles = async () => {
                             <i class="ri-download-line"></i>
                         </button>
 
-                        <button class="bg-amber-400 hover:bg-amber-600 text-white rounded hover:cursor-pointer px-2 py-1">
+                        <button onclick="openModal('${file._id}','${file.filename}', '${file.type}', '${file.size}')" class="bg-amber-400 hover:bg-amber-600 text-white rounded hover:cursor-pointer px-2 py-1">
                             <i class="ri-share-line"></i>
                         </button>
                     </div>
@@ -153,5 +154,54 @@ const downloadFile = async (id, filename, button) => {
     {
         button.innerHTML = `<i class="ri-download-line"></i>`
         button.disabled = false
+    }
+}
+
+const openModal = (id, filename, ext, size) => {
+    Swal.fire({
+            showConfirmButton: false,
+            html: `
+                <form class='flex flex-col gap-6' onsubmit="shareFile('${id}', '${filename}', '${ext}', '${size}', event)">
+                    <h1 class='text-lg text-black font-semibold text-left'>Email id</h1>
+                    <input type='email' name='email' required class='border py-1 px-3 rounded' placeholder='Enter email'/>
+                    <button id='send-btn' class='px-6 py-2 text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 hover:cursor-pointer border-0 rounded-md w-fit'>Send</button>
+                  
+                    <p class=' bg-gray-200 py-2 px-6 rounded-md text-center'>You are sharing - <span class='text-green-600'>${filename}.${ext}</span>
+                     
+                    <button onclick='Swal.close()' type='button' class='absolute top-2 right-3 text-xl hover:cursor-pointer'>
+                        <i class='ri-close-circle-fill'></i>
+                    </button>    
+                </form>
+            `
+        });
+}
+
+const shareFile = async (id, filename, ext, size, e) => {
+    
+    try
+    {        
+        e.preventDefault()        
+        const sendButton = document.getElementById('send-btn')
+        const form = e.target
+        const email = form.email.value.trim()
+        sendButton.disabled = true
+        sendButton.innerHTML = `<i class='fa fa-spinner fa-spin mr-2'></i>Sending`
+        const payload = {
+            fileId: id,
+            ext,
+            email,
+            filename,
+            size
+        }
+        const {data} = await axios.post(`/api/share`, payload)
+        Toast.success(`${data.message}`)
+    }
+    catch(err)
+    {
+        Toast.error(`${err.response ? err.response.data.message : err.message}`)
+    }
+    finally
+    {
+        Swal.close()
     }
 }
