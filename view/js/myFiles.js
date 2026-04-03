@@ -71,7 +71,7 @@ const fetchFiles = async () => {
         tableUI += `
             <tr class="text-gray-500 border-b border-gray-100 select-none">
                 <td class="py-4 px-4 capitalize">${file.filename}</td>
-                <td class="uppercase px-4">${file.type}</td>
+                <td class="uppercase">${file.type}</td>
                 <td>${(file.size/(1024*1024)).toFixed(1)} Mb</td>
                 <td>${moment(file.createdAt).format('DD MMM YYYY hh:mm:ss A')}</td>
                 <td>

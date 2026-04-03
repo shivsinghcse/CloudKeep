@@ -54,9 +54,11 @@ const deleteFile = async (req, res) => {
                 return res.status(404).json({message: 'file does not exist'})
             }
             
-        await cloudinary.uploader.destroy(file.public_id, {
-            resource_type: file.resource_type
+        const result = await cloudinary.uploader.destroy(file.public_id, {
+            resource_type: file.resource_type || "raw"
         })
+
+        console.log("Cloudinary delete result:", result)
 
         await FileModel.findByIdAndDelete(id)
         res.status(200).json({ message: "File deleted successfully" })
