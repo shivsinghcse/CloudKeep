@@ -4,20 +4,21 @@ const axios = require("axios");
 
 
 const createFile = async (req, res) => {
-    try
-    {
+    try {
         const file = req.file
-        const {filename} = req.body
-        
+        const { filename } = req.body
+
+        const getResourceTypeFromUrl = (url) => {
+            if (url.includes("/image/upload/")) return "image"
+            if (url.includes("/video/upload/")) return "video"
+            return "raw"
+        }
+
         const payload = {
             url: file.path,
             filename: filename || file.originalname,
-            public_id: file.filename, 
-            resource_type: file.mimetype.startsWith("image")
-                ? "image"
-                : file.mimetype.startsWith("video")
-                ? "video"
-                : "raw",
+            public_id: file.filename,
+            resource_type: getResourceTypeFromUrl(file.path), // ✅ FIX
             type: file.originalname.split('.').pop(),
             size: file.size
         }
@@ -25,9 +26,8 @@ const createFile = async (req, res) => {
         const newFile = await FileModel.create(payload)
         res.status(200).json(newFile)
     }
-    catch(err)
-    {
-        res.status(500).json({message: err.message})
+    catch (err) {
+        res.status(500).json({ message: err.message })
     }
 }
 
@@ -53,12 +53,12 @@ const deleteFile = async (req, res) => {
             {
                 return res.status(404).json({message: 'file does not exist'})
             }
-            
+        
         const result = await cloudinary.uploader.destroy(file.public_id, {
-            resource_type: file.resource_type || "raw"
+            resource_type: file.resource_type ||  "image"
         })
 
-        console.log("Cloudinary delete result:", result)
+        // console.log("DELETE RESULT:", result)
 
         await FileModel.findByIdAndDelete(id)
         res.status(200).json({ message: "File deleted successfully" })
