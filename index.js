@@ -24,12 +24,7 @@ const storage = multer.diskStorage({
         next(null, name)
     }
 })
-const upload = multer({
-    storage: storage,
-    // limits: {
-        // fileSize: 200 * 1024 * 1024
-    // }
-})
+const upload = multer({storage: storage})
 
 const { signup, login } = require('./controller/user.controller')
 const { createFile, fetchFiles, deleteFile, fileDownload } = require('./controller/file.controller')
@@ -111,7 +106,7 @@ app.get('/history', (req, res) => {
 
 app.post('/api/signup', signup)
 app.post('/api/login', login)
-app.post('/api/file', upload.single('myFile'),createFile)
+app.post('/api/file', upload.single('myFile'), createFile)
 app.get('/api/file', fetchFiles)
 app.delete('/api/file/:id', deleteFile)
 app.get('/api/file/download/:id', fileDownload)
