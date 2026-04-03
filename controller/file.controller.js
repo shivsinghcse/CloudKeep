@@ -1,15 +1,23 @@
 const FileModel = require('../model/file.model')
-const fs = require('fs')
-const path = require('path')
+const cloudinary = require('../config/cloudinary');
+const axios = require("axios");
+
 
 const createFile = async (req, res) => {
     try
     {
         const file = req.file
         const {filename} = req.body
+        
         const payload = {
-            path: (file.destination+file.filename),
-            filename: filename,
+            url: file.path,
+            filename: filename || file.originalname,
+            public_id: file.filename, 
+            resource_type: file.mimetype.startsWith("image")
+                ? "image"
+                : file.mimetype.startsWith("video")
+                ? "video"
+                : "raw",
             type: file.originalname.split('.').pop(),
             size: file.size
         }
@@ -39,17 +47,23 @@ const deleteFile = async (req, res) => {
     try
     {
         const { id } = req.params 
-        const file = await FileModel.findByIdAndDelete(id)
-        if(!file)
-        {
-            return res.status(404).json({message: 'file does not exist'})
-        }
 
-        fs.unlinkSync(file.path)
-        res.status(200).json(file)
+        const file = await FileModel.findById(id)
+        if(!file)
+            {
+                return res.status(404).json({message: 'file does not exist'})
+            }
+            
+        await cloudinary.uploader.destroy(file.public_id, {
+            resource_type: file.resource_type
+        })
+
+        await FileModel.findByIdAndDelete(id)
+        res.status(200).json({ message: "File deleted successfully" })
     }
     catch(err)
     {
+        console.error("DELETE ERROR:", err);
         res.status(500).json({message: err.message})
     }
 }
@@ -64,18 +78,26 @@ const fileDownload = async (req, res) => {
             return res.status(404).json({message: 'File not found'})
         }
 
-        const root = process.cwd()
-        const filePath = path.join(root, file.path)
+        // 🔥 Fetch file from Cloudinary
+        const response = await axios({
+            url: file.url,
+            method: "GET",
+            responseType: "stream"
+        });
 
-        res.setHeader('Content-Disposition', `attachment; filename="${file.filename}.${file.type}"`)
-        // res.setHeader('Content-Type', 'image/png')
-        
-        res.sendFile(filePath, (err) => {
-            if(err)
-            {
-                res.status(404).json({message: 'File not found'})
-            }
-        })
+        // ✅ Force download
+        res.setHeader(
+            "Content-Disposition",
+            `attachment; filename="${file.filename}.${file.type}"`
+        );
+
+        res.setHeader(
+            "Content-Type",
+            response.headers["content-type"]
+        );
+
+        // ✅ Pipe stream to client
+        response.data.pipe(res);
     }
     catch(err)
     {

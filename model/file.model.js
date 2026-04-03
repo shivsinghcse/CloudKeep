@@ -7,7 +7,7 @@ const fileSchema = new Schema({
         lowercase: true,
         required: true
     },
-    path: {
+    url: {
         type: String,
         trim: true,
         lowercase: true,
@@ -19,8 +19,16 @@ const fileSchema = new Schema({
         lowercase: true,
         required: true
     },
+    resource_type : {
+        type: String,
+        required: true
+    },
     size: {
         type: Number,
+        required: true
+    },
+    public_id: {
+        type: String,
         required: true
     }
 }, {timestamps: true})

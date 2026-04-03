@@ -9,22 +9,29 @@ const express = require('express')
 const path = require('path')
 const cors = require('cors')
 const {v4: uniqueId} = require('uuid')
-// console.log(path.join(root, 'view', 'signup.html'));
 
-const multer = require('multer')
-const storage = multer.diskStorage({
-    destination: (req, file, next) => {
-        next(null, 'files/')
+const multer = require("multer");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("./config/cloudinary"); 
+
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+    folder: "cloudkeep_files",
+    resource_type: "auto", 
+
+    public_id: (req, file) => {
+        const nameArray = file.originalname.split(".");
+        const extension = nameArray.pop();
+        const originalName = nameArray.join(".");
+        return `${originalName}_${Date.now()}`;
     },
-    filename: (req, file, next) => {
-        const nameArray = file.originalname.split('.')
-        const extension = nameArray.pop()
-        const orignalName = nameArray.join('.')
-        const name = `${orignalName}_${uniqueId()}.${extension}`
-        next(null, name)
-    }
-})
-const upload = multer({storage: storage})
+
+    format: async (req, file) => file.mimetype.split('/')[1] 
+}
+});
+
+const upload = multer({ storage });
 
 const { signup, login } = require('./controller/user.controller')
 const { createFile, fetchFiles, deleteFile, fileDownload } = require('./controller/file.controller')
