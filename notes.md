@@ -26,6 +26,25 @@
 - 50k/month mail, purchase smtp servers provided by many companies like sendgrid, msg91, mailchimp
 - more than 50k/month use AWS SES (can use only pvt. ltd, llc)
 - SMTP
+
+# Day-37 Middleware
+- in node.js Middleware is a function which execute betweeen req and res
+- why we use 
+	- to modify req (in req object there are multiple properties and methods like method, url, body, params) before goto controller (controller finally gives the response), here req=endpoint, res=controller
+	- to secure req
+- eg:
+```js
+app.get('/api/product', demo, getProduct)
+// '/api/product' --> req
+// demo is middleware here
+// getProduct --> res
+```
+- endpoint(API) == route (UI)
+- route/router level middleware
+- app level middleware `app.use(demo) it applies on entire app
+
+
+
 # Day-41 AWS
 - AWS (Amazon web services)
 - we generally deploy node.js project on cloud

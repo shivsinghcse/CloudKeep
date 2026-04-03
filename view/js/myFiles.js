@@ -57,34 +57,73 @@ const uploadFile = async (e) => {
 const fetchFiles = async () => {
     try
     {
-        const tbody = document.getElementById('tbody')
         const {data} = await axios.get('/api/file')
-        let ui = ''
+
+        const tbody = document.getElementById('tbody');
+        const cardContainer = document.getElementById('cardContainer');
+
+        let tableUI = '';
+        let cardUI = '';
+
         data.forEach(file => {
-            const row = `<tr class="text-gray-500 border-b border-gray-100">
-                <td class="py-4 pl-6 capitalize">${file.filename}</td>
-                <td class="uppercase">${file.type}</td>
-                <td>${(file.size/(1024*1024)).toFixed(1)}Mb</td>
-                <td>${moment(file.createdAt).format('DD MMM YYYY hh:mm:ss A')}</td>
-                <td>
-                    <div class="space-x-2">
-                        <button onclick="deleteFile('${file._id}', this)" class="bg-rose-400 hover:bg-rose-600 text-white rounded hover:cursor-pointer px-2 py-1">
+
+        // TABLE UI (desktop)
+        tableUI += `
+            <tr class="text-gray-500 border-b border-gray-100">
+                <td class="py-4 px-4 capitalize">${file.filename}</td>
+                <td class="uppercase px-4">${file.type}</td>
+                <td class="px-4">${file.size}</td>
+                <td class="px-4">${file.createdAt}</td>
+                <td class="px-4">
+                    <div class="flex gap-2">
+                        <button onclick="deleteFile('${file._id}', this)" class="bg-rose-400 text-white px-2 py-1 rounded">
                             <i class="ri-delete-bin-4-line"></i>
                         </button>
-
-                        <button onclick="downloadFile('${file._id}', '${file.filename}', this)" class="bg-green-400 hover:bg-green-600 text-white rounded hover:cursor-pointer px-2 py-1">
+                        <button onclick="downloadFile('${file._id}', '${file.filename}', this)" class="bg-green-400 text-white px-2 py-1 rounded">
                             <i class="ri-download-line"></i>
                         </button>
-
-                        <button onclick="openModal('${file._id}','${file.filename}', '${file.type}', '${file.size}')" class="bg-amber-400 hover:bg-amber-600 text-white rounded hover:cursor-pointer px-2 py-1">
+                        <button onclick="openModal('${file._id}','${file.filename}','${file.type}','${file.size}')" class="bg-amber-400 text-white px-2 py-1 rounded">
                             <i class="ri-share-line"></i>
                         </button>
                     </div>
                 </td>
-            </tr>`
-            ui += row
+            </tr>
+        `;
+
+        // CARD UI (mobile)
+        cardUI += `
+            <div class="bg-white rounded-lg shadow p-4 space-y-3 border border-gray-200">
+                
+                <div class="flex justify-between items-start">
+                    <h1 class="font-medium text-gray-700 capitalize">${file.filename}</h1>
+                    <span class="text-xs bg-gray-100 px-2 py-1 rounded uppercase">${file.type}</span>
+                </div>
+
+                <div class="text-sm text-gray-500 flex justify-between">
+                    <span>Size: ${(file.size/(1024*1024)).toFixed(1)} Mb</span>
+                    <span>${moment(file.createdAt).format('DD MMM YYYY hh:mm:ss A')}</span>
+                </div>
+
+                <div class="flex justify-end gap-2 pt-2 border-t border-gray-300">
+                    <button onclick="deleteFile('${file._id}', this)" class="bg-rose-400 text-white px-3 py-1 rounded">
+                        <i class="ri-delete-bin-4-line"></i>
+                    </button>
+
+                    <button onclick="downloadFile('${file._id}', '${file.filename}', this)" class="bg-green-400 text-white px-3 py-1 rounded">
+                        <i class="ri-download-line"></i>
+                    </button>
+
+                    <button onclick="openModal('${file._id}','${file.filename}','${file.type}','${file.size}')" class="bg-amber-400 text-white px-3 py-1 rounded">
+                        <i class="ri-share-line"></i>
+                    </button>
+                </div>
+
+            </div>
+        `;
         });
-        tbody.innerHTML = ui
+
+        tbody.innerHTML = tableUI;
+        cardContainer.innerHTML = cardUI;
     }
     catch(err)
     {

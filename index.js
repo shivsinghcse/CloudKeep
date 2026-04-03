@@ -39,7 +39,7 @@ const { fetchDashboard } = require('./controller/dashboard.controller')
 const { verifyToken } = require('./controller/token.controller')
 const { shareFile } = require('./controller/share.controller')
 const app = express()
-app.listen(process.env.PORT || 8080)
+app.listen(process.env.PORT || 8080) 
 
 app.use(cors({
     origin: ['http://127.0.0.1:5500', 'http://localhost:8080/', 'https://cloudkeep-gh1d.onrender.com/']
