@@ -72,9 +72,9 @@ const fetchFiles = async () => {
             <tr class="text-gray-500 border-b border-gray-100 select-none">
                 <td class="py-4 px-4 capitalize">${file.filename}</td>
                 <td class="uppercase px-4">${file.type}</td>
-                <td class="px-4">${(file.size/(1024*1024)).toFixed(1)} Mb</td>
-                <td class="px-4">${moment(file.createdAt).format('DD MMM YYYY hh:mm:ss A')}</td>
-                <td class="px-4">
+                <td>${(file.size/(1024*1024)).toFixed(1)} Mb</td>
+                <td>${moment(file.createdAt).format('DD MMM YYYY hh:mm:ss A')}</td>
+                <td>
                     <div class="flex gap-2">
                         <button onclick="deleteFile('${file._id}', this)" class="bg-rose-400 text-white px-2 py-1 rounded">
                             <i class="ri-delete-bin-4-line"></i>
