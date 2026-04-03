@@ -8,5 +8,4 @@ const drawer = document.querySelector('#drawer');
 
 const toggleDrawer = () => {
     drawer.classList.toggle("translate-x-full");
-    overlay.classList.toggle("hidden");
 }
