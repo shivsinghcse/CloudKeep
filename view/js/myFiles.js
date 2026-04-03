@@ -69,7 +69,7 @@ const fetchFiles = async () => {
 
         // TABLE UI (desktop)
         tableUI += `
-            <tr class="text-gray-500 border-b border-gray-100">
+            <tr class="text-gray-500 border-b border-gray-100 select-none">
                 <td class="py-4 px-4 capitalize">${file.filename}</td>
                 <td class="uppercase px-4">${file.type}</td>
                 <td class="px-4">${file.size}</td>
@@ -92,7 +92,7 @@ const fetchFiles = async () => {
 
         // CARD UI (mobile)
         cardUI += `
-            <div class="bg-white rounded-lg shadow p-4 space-y-3 border border-gray-200">
+            <div class="bg-white rounded-lg shadow p-4 space-y-3 border border-gray-200 select-none">
                 
                 <div class="flex justify-between items-start">
                     <h1 class="font-medium text-gray-700 capitalize">${file.filename}</h1>
