@@ -154,43 +154,37 @@ const deleteFile = async (id, button) => {
 }
 
 const downloadFile = async (id, filename, button) => {
-   try
-   {
+    try {
         button.innerHTML = `<i class="fa fa-spinner fa-spin"></i>`
         button.disabled = true
-        
-        const {data} = await axios.get(`/api/file/download/${id}`, {
+
+        const response = await axios.get(`/api/file/download/${id}`, {
             responseType: 'blob'
-            })
+        })
 
-        const url = URL.createObjectURL(data)
+        // Extract filename from Content-Disposition header
+        const disposition = response.headers['content-disposition']
+        let fname = filename
+        if (disposition) {
+            const match = disposition.match(/filename="(.+)"/)
+            if (match) fname = match[1]
+        }
 
+        const url = URL.createObjectURL(response.data)
         const link = document.createElement('a')
         link.href = url
-
-        const ext = data.type.split('/').pop()
-        const name = `${filename}.${ext}` 
-        link.setAttribute('download', name)    
-
-        document.body.appendChild(link);
+        link.setAttribute('download', fname)
+        document.body.appendChild(link)
         link.click()
-
         link.remove()
         URL.revokeObjectURL(url)
+
         Toast.success(`File downloaded!`)
-   }
-   catch(err){
-       if(!err.response)
-        {
-            return Toast.error(err.message)
-        } 
-        
-        const error = await (err?.response?.data)?.text()
-        const {message} = JSON.parse(error)
-        Toast.error(message)
     }
-    finally
-    {
+    catch (err) {
+        Toast.error(err.response ? err.response.data.message : err.message)
+    }
+    finally {
         button.innerHTML = `<i class="ri-download-line"></i>`
         button.disabled = false
     }

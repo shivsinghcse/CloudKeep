@@ -71,39 +71,30 @@ const deleteFile = async (req, res) => {
 }
 
 const fileDownload = async (req, res) => {
-    try
-    {
-        const {id} = req.params
+    try {
+        const { id } = req.params
+
         const file = await FileModel.findById(id)
-        if(!file)
-        {
-            return res.status(404).json({message: 'File not found'})
+        if (!file) {
+            return res.status(404).json({ message: 'File not found' })
         }
 
-        // 🔥 Fetch file from Cloudinary
-        const response = await axios({
-            url: file.url,
-            method: "GET",
-            responseType: "stream"
-        });
+        const downloadUrl = file.url.replace('/upload/', '/upload/fl_attachment/')
 
-        // ✅ Force download
-        res.setHeader(
-            "Content-Disposition",
-            `attachment; filename="${file.filename}.${file.type}"`
-        );
+        const response = await axios.get(downloadUrl, {
+            responseType: 'stream'
+        })
 
-        res.setHeader(
-            "Content-Type",
-            response.headers["content-type"]
-        );
+        const filename = `${file.filename}.${file.type}` // e.g. "resume.pdf", "setup.exe"
 
-        // ✅ Pipe stream to client
-        response.data.pipe(res);
-    }
-    catch(err)
-    {
-        res.status(500).json({message: err.message})
+        res.setHeader('Content-Type', response.headers['content-type'])
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`)
+
+        response.data.pipe(res)
+
+    } catch (err) {
+        console.error("Download error:", err.message)
+        res.status(500).json({ message: err.message })
     }
 }
 
