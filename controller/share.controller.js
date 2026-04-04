@@ -117,6 +117,8 @@ const shareFile = async (req, res) => {
     }
     catch(err)
     {
+        console.error('Full error:', err)
+        console.error('Full error2:', err.message)
         res.status(500).json({message: err.response ? err.response.data.message : err.message})
     }
 }
