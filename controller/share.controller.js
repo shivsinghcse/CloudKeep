@@ -131,7 +131,7 @@ const shareFile = async (req, res) => {
         const link = `${process.env.SERVER}/api/file/download/${fileId}`
 
         await resend.emails.send({
-            from: process.env.RESEND_FROM,
+            from: `CloudKeep <${process.env.RESEND_FROM}>`,
             to: email,
             subject: '☁️ CloudKeep: Just sent you a file',
             html: getEmailTemplate(link, filename, ext, size)
