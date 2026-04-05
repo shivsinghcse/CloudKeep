@@ -72,7 +72,46 @@ const fetchFiles = async () => {
 
         let tableUI = '';
         let cardUI = '';
+        const notFound = `
+            <tr class=" w-full">
+                <td colspan="4">
+                    <div class="flex flex-col items-center justify-center py-16 px-6 my-6 mx-auto max-w-md">
 
+                        <!-- Illustration container -->
+                        <div class="relative mb-6">
+                            <div class="w-24 h-24 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center shadow-inner">
+                            <svg class="w-12 h-12 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                            </svg>
+                            </div>
+                            <!-- Decorative dot -->
+                            <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-slate-200 border-2 border-white"></span>
+                        </div>
+
+                        <!-- Text -->
+                        <h2 class="text-lg font-semibold text-slate-700 mb-1">No files added</h2>
+                        <p class="text-sm text-slate-400 text-center leading-relaxed max-w-xs">
+                            Upload a file to get started. Supported formats will appear here.
+                        </p>
+
+                        <!-- Optional CTA -->
+                        <button onclick="toggleDrawer()" class="mt-6 px-5 py-2 text-sm font-medium text-slate-600 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors inline-flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                            </svg>
+                            Upload File
+                        </button>
+                </div>
+            </td>
+        </tr>
+    `
+
+        if(data.length === 0){
+            tbody.innerHTML = notFound
+            cardContainer.innerHTML = notFound
+            return
+        }
         data.forEach(file => {
 
         // TABLE UI (desktop)

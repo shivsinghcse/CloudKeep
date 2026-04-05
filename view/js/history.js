@@ -25,7 +25,46 @@ const fetchHistory = async() => {
             }
         }
         const {data} = await axios.get('/api/share', options)
-        console.log(data);
+
+        const notFound = `
+            <tr class="border w-full">
+                <td colspan="4">
+                    <div class="flex flex-col items-center justify-center py-16 px-6 my-6 mx-auto max-w-md">
+                    
+                    <!-- Illustration container -->
+                    <div class="relative mb-6">
+                        <div class="w-24 h-24 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center shadow-inner">
+                        <svg class="w-12 h-12 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12h6m-3-3v6M4.5 19.5l.75-3.75A4.5 4.5 0 0 1 9 12h6a4.5 4.5 0 0 1 3.75 3.75l.75 3.75M3 9l2.25-4.5h13.5L21 9M3 9h18" />
+                        </svg>
+                        </div>
+                        <!-- Decorative dot -->
+                        <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-indigo-200 border-2 border-white"></span>
+                    </div>
+
+                    <!-- Text -->
+                    <h2 class="text-lg font-semibold text-slate-700 mb-1">No history yet</h2>
+                    <p class="text-sm text-slate-400 text-center leading-relaxed max-w-xs">
+                        Your activity will appear here once you get started.
+                    </p>
+
+                    <!-- Optional CTA -->
+                    <a href="files">
+                        <button class="mt-6 px-5 py-2 text-sm font-medium text-indigo-600 border border-indigo-200 rounded-lg hover:bg-indigo-50 transition-colors">
+                            Get Started
+                        </button>
+                    </a>
+
+                    </div>
+                </td>
+            </tr>
+        `
+        if(data.length === 0){
+            table.innerHTML = notFound
+            cards.innerHTML = notFound
+            return
+        }
 
         data.forEach((item, index) => {
             
