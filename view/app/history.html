@@ -14,7 +14,11 @@
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
     <script src="../js/session.js"></script>
     <script src="../js/preGaurd.js"></script>
 </head>
@@ -91,52 +95,18 @@
                             <tr class="bg-slate-900 text-slate-200 text-left">
                                 <th class="font-medium py-3 px-4">Filename</th>
                                 <th class="font-medium px-4">Email</th>
+                                <th class="font-medium px-4">Size</th>
                                 <th class="font-medium px-4">Datetime</th>
-                                <th class="font-medium px-4">Action</th>
                             </tr>
                         </thead>
 
                         <tbody id="historyTable">
                             <!-- dynamic rows -->
-                             <tr class="text-gray-500 border-b border-gray-100">
-                                <td class="py-4 pl-6">Introduction to HTML</td>
-                                <td>singhshiv0204@gmail.com</td>
-                                <td>24 June 2025</td>
-                                <td>
-                                    <div class="space-x-2">
-                                        <button class="bg-rose-400 hover:bg-rose-600 text-white rounded hover:cursor-pointer px-2 py-1">
-                                            <i class="ri-delete-bin-4-line"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
                 <div id="historyCards" class="md:hidden space-y-4">
                     <!-- dynamic cards -->
-                     <div class="bg-white rounded-lg shadow p-4 space-y-3 border border-gray-200">
-    
-                        <div class="flex justify-between items-start">
-                            <h1 class="font-medium text-gray-700 capitalize">Introduction to HTML</h1>
-                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">Shared</span>
-                        </div>
-
-                        <p class="text-sm text-gray-500 break-all">
-                            singhshiv0204@gmail.com
-                        </p>
-
-                        <div class="flex justify-between text-sm text-gray-400">
-                            <span>24 June 2025</span>
-                        </div>
-
-                        <div class="flex justify-end pt-2 border-t border-gray-300">
-                            <button class="bg-rose-400 hover:bg-rose-600 text-white rounded px-3 py-1">
-                                <i class="ri-delete-bin-4-line"></i>
-                            </button>
-                        </div>
-
-                    </div>
                 </div>
             </div>
         </section>

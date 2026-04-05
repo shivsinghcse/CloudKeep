@@ -7,7 +7,7 @@ mongoose.connect(process.env.DB)
 const root = process.cwd()
 const express = require('express')
 const path = require('path')
-const cors = require('cors')
+// const cors = require('cors')
 const {v4: uniqueId} = require('uuid')
 
 const multer = require("multer");
@@ -37,14 +37,14 @@ const { signup, login } = require('./controller/user.controller')
 const { createFile, fetchFiles, deleteFile, fileDownload } = require('./controller/file.controller')
 const { fetchDashboard } = require('./controller/dashboard.controller')
 const { verifyToken } = require('./controller/token.controller')
-const { shareFile } = require('./controller/share.controller')
+const { shareFile, fetchShared } = require('./controller/share.controller')
 const AuthMiddleware = require('./middleware/auth.middleware')
 const app = express()
 app.listen(process.env.PORT || 8080) 
 
-app.use(cors({
-    origin: ['http://127.0.0.1:5500', 'http://localhost:8080/', 'https://cloudkeep-gh1d.onrender.com/']
-}))
+// app.use(cors({
+//     origin: ['http://127.0.0.1:5500', 'http://localhost:8080/', 'https://cloudkeep-gh1d.onrender.com/']
+// }))
 app.use(express.static('view'))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
@@ -114,13 +114,14 @@ app.get('/history', (req, res) => {
 
 app.post('/api/signup', signup)
 app.post('/api/login', login)
-app.post('/api/file', upload.single('myFile'), createFile)
+app.post('/api/file', AuthMiddleware, upload.single('myFile'), createFile)
 app.get('/api/file', AuthMiddleware, fetchFiles)
 app.delete('/api/file/:id', AuthMiddleware, deleteFile)
-app.get('/api/file/download/:id', fileDownload)
+app.get('/api/file/download/:id', AuthMiddleware, fileDownload)
 app.get('/api/dashboard', AuthMiddleware, fetchDashboard)
 app.post('/api/token/verify', verifyToken)
 app.post('/api/share', AuthMiddleware, shareFile)
+app.get('/api/share', AuthMiddleware, fetchShared)
 
 
 // endpoint Not found

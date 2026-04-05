@@ -135,12 +135,21 @@ const shareFile = async (req, res) => {
             return res.status(200).json({ message: 'Invalid Information' })
         }
 
-        await resend.emails.send({
-            from: `CloudKeep <${process.env.RESEND_FROM}>`,
-            to: email,
-            subject: '☁️ CloudKeep: Just sent you a file',
-            html: getEmailTemplate(link, filename, ext, size)
-        })
+        const payload = {
+            user: req.user.id,
+            receiverEmail: email,
+            file: fileId
+        }
+
+        await Promise.all([
+            resend.emails.send({
+                from: `CloudKeep <${process.env.RESEND_FROM}>`,
+                to: email,
+                subject: '☁️ CloudKeep: Just sent you a file',
+                html: getEmailTemplate(link, filename, ext, size)
+            }),
+            ShareModel.create(payload)
+        ])
 
         res.status(200).json({ message: 'Email sent' })
     }
@@ -150,6 +159,21 @@ const shareFile = async (req, res) => {
     }
 }
 
+const fetchShared = async (req, res) => {
+    try
+    {
+        const history = await ShareModel.find({user: req.user.id})
+        .populate('file', 'filename size')
+        .sort({createdAt: -1})
+        res.status(200).json(history)
+    }
+    catch(err)
+    {
+        res.status(500).json({message: err.message})
+    }
+}
+
 module.exports = {
-    shareFile
+    shareFile,
+    fetchShared
 }  

@@ -1,4 +1,5 @@
 axios.defaults.baseURL = SERVER
+const token = localStorage.getItem('authToken')
 
 window.onload = function () {
     fetchFiles()
@@ -7,7 +8,6 @@ window.onload = function () {
 const Toast = new Notyf({
     position: {x: 'center', y: 'top'},
     duration: 2000
-
 })
 
 
@@ -32,6 +32,9 @@ const uploadFile = async (e) => {
                 const percentageValue = Math.floor((loaded*100)/total)
                 progressbar.style.width = percentageValue+'%'
                 progressbar.innerHTML = percentageValue+'%'
+            },
+            headers: {
+                Authorization: `Bearer ${token}`
             }
         }
 
@@ -57,7 +60,12 @@ const uploadFile = async (e) => {
 const fetchFiles = async () => {
     try
     {
-        const {data} = await axios.get('/api/file')
+        const options = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+        const {data} = await axios.get('/api/file', options)
 
         const tbody = document.getElementById('tbody');
         const cardContainer = document.getElementById('cardContainer');
@@ -73,7 +81,7 @@ const fetchFiles = async () => {
                 <td class="py-4 px-4 capitalize">${file.filename}</td>
                 <td class="uppercase">${file.type}</td>
                 <td>${(file.size/(1024*1024)).toFixed(1)} Mb</td>
-                <td>${moment(file.createdAt).format('DD MMM YYYY hh:mm:ss A')}</td>
+                <td>${moment(file.createdAt).format('DD MMM YYYY hh:mm A')}</td>
                 <td>
                     <div class="flex gap-2">
                         <button onclick="deleteFile('${file._id}', this)" class="bg-rose-400 text-white px-2 py-1 rounded">
@@ -101,7 +109,7 @@ const fetchFiles = async () => {
 
                 <div class="text-sm text-gray-500 flex justify-between">
                     <span>Size: ${(file.size/(1024*1024)).toFixed(1)} Mb</span>
-                    <span>${moment(file.createdAt).format('DD MMM YYYY hh:mm:ss A')}</span>
+                    <span>${moment(file.createdAt).format('DD MMM YYYY hh:mm A')}</span>
                 </div>
 
                 <div class="flex justify-end gap-2 pt-2 border-t border-gray-300">
@@ -127,7 +135,8 @@ const fetchFiles = async () => {
     }
     catch(err)
     {
-        console.log(err);
+        console.error(err.response ? err.response.data.message : err.message);
+        Toast.error(err.response ? err.response.data.message : err.message)
     }
 }
 
@@ -136,7 +145,12 @@ const deleteFile = async (id, button) => {
    {
      button.innerHTML = `<i class="fa fa-spinner fa-spin"></i>`
      button.disabled = true
-     await axios.delete(`/api/file/${id}`)
+     const options = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+     }
+     await axios.delete(`/api/file/${id}`, options)
      Toast.success(`File deleted!`)
      fetchFiles()
    }
@@ -159,7 +173,10 @@ const downloadFile = async (id, filename, button) => {
         button.disabled = true
 
         const response = await axios.get(`/api/file/download/${id}`, {
-            responseType: 'blob'
+            responseType: 'blob',
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
         })
 
         // Extract filename from Content-Disposition header
@@ -182,7 +199,8 @@ const downloadFile = async (id, filename, button) => {
         Toast.success(`File downloaded!`)
     }
     catch (err) {
-        Toast.error(err.response ? err.response.data.message : err.message)
+        console.error(err.response);
+        Toast.error(err.response ? err.response.statusText : err.message)
     }
     finally {
         button.innerHTML = `<i class="ri-download-line"></i>`
@@ -217,8 +235,10 @@ const shareFile = async (id, filename, ext, size, e) => {
         const sendButton = document.getElementById('send-btn')
         const form = e.target
         const email = form.email.value.trim()
+
         sendButton.disabled = true
         sendButton.innerHTML = `<i class='fa fa-spinner fa-spin mr-2'></i>Sending`
+
         const payload = {
             fileId: id,
             ext,
@@ -226,7 +246,13 @@ const shareFile = async (id, filename, ext, size, e) => {
             filename,
             size
         }
-        const {data} = await axios.post(`/api/share`, payload)
+
+        const options = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+        const {data} = await axios.post(`/api/share`, payload, options)
         Toast.success(`${data.message}`)
     }
     catch(err)
