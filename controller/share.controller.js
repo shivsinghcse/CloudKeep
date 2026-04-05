@@ -130,6 +130,11 @@ const shareFile = async (req, res) => {
         const { email, fileId, ext, filename, size } = req.body
         const link = `${process.env.SERVER}/api/file/download/${fileId}`
 
+        if(!email || !fileId || !ext || !filename || !size)
+        {
+            return res.status(200).json({ message: 'Invalid Information' })
+        }
+
         await resend.emails.send({
             from: `CloudKeep <${process.env.RESEND_FROM}>`,
             to: email,
