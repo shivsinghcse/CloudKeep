@@ -8,7 +8,7 @@ const fetchDashboard = async (req, res) => {
         const reports = await FileModel.aggregate([
             {
                 $group: {
-                    _id: "$type",
+                    _id: "$resource_type",
                     total: {$sum: 1}
                 }
             }
@@ -23,4 +23,4 @@ const fetchDashboard = async (req, res) => {
 
 module.exports = {
     fetchDashboard
-}
+} 

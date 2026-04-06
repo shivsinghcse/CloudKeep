@@ -7,7 +7,6 @@ mongoose.connect(process.env.DB)
 const root = process.cwd()
 const express = require('express')
 const path = require('path')
-// const cors = require('cors')
 const {v4: uniqueId} = require('uuid')
 
 const multer = require("multer");
@@ -42,9 +41,6 @@ const AuthMiddleware = require('./middleware/auth.middleware')
 const app = express()
 app.listen(process.env.PORT || 8080) 
 
-// app.use(cors({
-//     origin: ['http://127.0.0.1:5500', 'http://localhost:8080/', 'https://cloudkeep-gh1d.onrender.com/']
-// }))
 app.use(express.static('view'))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
@@ -122,6 +118,7 @@ app.get('/api/dashboard', AuthMiddleware, fetchDashboard)
 app.post('/api/token/verify', verifyToken)
 app.post('/api/share', AuthMiddleware, shareFile)
 app.get('/api/share', AuthMiddleware, fetchShared)
+
 
 
 // endpoint Not found

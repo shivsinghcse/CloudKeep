@@ -61,11 +61,11 @@ const getEmailTemplate = (link, filename, ext, size) => {
                                         </a>
                                     </div>
 
-                                    <!-- Expiration Notice -->
+                                    <!-- Expiration Notice 
                                     <div style="background-color:#fff4e5; color:#b45309; padding:15px; border-radius:8px; margin-bottom:20px; border:1px solid #fde68a;">
                                         ⏳ <strong>Note:</strong> This file will expire on <strong>{{EXPIRATION_DATE}}</strong>.  
                                         Make sure to download it before it becomes unavailable.
-                                    </div>
+                                    </div>-->
 
                                     <p style="margin:0 0 10px;">
                                         If you weren’t expecting this file, you can safely ignore this email.
@@ -130,6 +130,9 @@ const shareFile = async (req, res) => {
         const { email, fileId, ext, filename, size } = req.body
         const link = `${process.env.SERVER}/api/file/download/${fileId}`
 
+        console.log(link);
+        return
+
         if(!email || !fileId || !ext || !filename || !size)
         {
             return res.status(200).json({ message: 'Invalid Information' })
@@ -162,9 +165,12 @@ const shareFile = async (req, res) => {
 const fetchShared = async (req, res) => {
     try
     {
+        const {limit} = req.query
         const history = await ShareModel.find({user: req.user.id})
-        .populate('file', 'filename size')
+        .populate('file', 'filename size type')
         .sort({createdAt: -1})
+        .limit(limit)
+
         res.status(200).json(history)
     }
     catch(err)

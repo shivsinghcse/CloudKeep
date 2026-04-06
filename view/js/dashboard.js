@@ -1,3 +1,15 @@
+window.onload = () => {
+    fetchFilesReport()
+    fetchRecentFiles()
+    fetchRecentShared()
+}
+
+const Toast = new Notyf({
+    position: {x: 'center', y: 'top'},
+    duration: 2000
+})
+
+
 const notFound = `
     <div class="flex flex-col items-center justify-center py-20 px-6 w-full">
 
@@ -63,4 +75,139 @@ const notFound = `
 `
 
 const dashboard = document.getElementById('dashboard')
-dashboard.innerHTML = notFound
+const recentFilesBox = document.getElementById('recent-files-box')
+const recentSharedBox = document.getElementById('recent-shared-box')
+const fileReportBox = document.getElementById('file-report-box')
+
+
+const fetchRecentFiles = async () => {
+    try
+    {
+        const options = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('authToken')}`
+            }
+        }
+        const {data} = await axios.get('/api/file?limit=5', options)
+
+        if(data.length === 0){
+            dashboard.innerHTML = notFound
+            return
+        }
+
+        let recentFilesUI = ''
+        for(let file of data){
+            const fileCard = `
+                <div class="flex justify-between items-start rounded-md py-2 px-3 shadow-md shadow-indigo-700/20 hover:shadow-indigo-700/40 transition duration-300 bg-indigo-300/30">
+                    <div>
+                        <h1 class="font-medium text-black/80 capitalize">${file.filename}</h1>
+                        <small class="text-gray-500 text-sm">${(file.size/(1024*1024)).toFixed(1)}Mb</small>
+                    </div>
+                    <div class='flex flex-col items-end justify-between gap-1'>
+                        <small class="text-gray-700 text-xs rounded bg-white py-[2px] px-2 border border-indigo-200 shadow capitalize">${file.type}</small>
+                        <p class="text-sm text-gray-600">${moment(file.createdAt).format('DD MMM YYYY')}</p>
+                    </div>
+                </div>
+            `
+            recentFilesUI += fileCard
+        }
+        recentFilesBox.innerHTML = recentFilesUI
+    }
+    catch(err){
+        console.error(err.response ? err.response.data.message : err.message)
+        Toast.error(err.response ? err.response.data.message : err.message)
+    }
+}
+
+const fetchRecentShared = async () => {
+    try
+    {
+        const options = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('authToken')}`
+            }
+        }
+        const {data} = await axios.get('/api/share?limit=5', options)
+
+        if(data.length === 0){
+            recentSharedBox.innerHTML = `
+                <div class='w-full min-h-30'>
+                    <div class='w-full h-full rounded'>
+                        <h1 class='text-2xl font-medium text-black/50 text-center py-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>No file shared yet !</h1>
+                    </div>
+                </div>
+            `
+            return
+        }
+
+        let recentSharedUI = ''
+        for(let item of data){
+            const fileCard = `
+                <div class="flex justify-between items-start rounded-md py-2 px-3 shadow-md shadow-indigo-700/20 hover:shadow-indigo-700/40 transition duration-300 bg-indigo-300/30">
+                    <div>
+                        <h1 class="font-medium text-black/80 capitalize">${item.file.filename}</h1>
+                        <small class="text-gray-500 text-sm">${item.receiverEmail}</small>
+                    </div>
+                    <div class='flex flex-col items-end justify-between gap-1'>
+                        <small class="text-gray-700 text-xs rounded bg-white py-[2px] px-2 border border-indigo-200 shadow capitalize">${item.file.type}</small>
+                        <p class="text-sm text-gray-600">${moment(item.createdAt).format('DD MMM YYYY')}</p>
+                    </div>
+                </div>
+            `
+            recentSharedUI += fileCard
+        }
+        recentSharedBox.innerHTML = recentSharedUI
+    }
+    catch(err){
+        console.error(err.response ? err.response.data.message : err.message)
+        Toast.error(err.response ? err.response.data.message : err.message)
+    }
+}
+
+
+
+const fetchFilesReport = async () => {
+    try
+    {
+        const options = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('authToken')}`
+            }
+        }
+        const {data} = await axios.get('/api/dashboard', options)
+        // console.log("data", data);
+
+        // if(data.length === 0){
+        //     recentSharedBox.innerHTML = `
+        //         <div class='w-full min-h-30'>
+        //             <div class='w-full h-full rounded'>
+        //                 <h1 class='text-2xl font-medium text-black/50 text-center py-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>No file shared yet !</h1>
+        //             </div>
+        //         </div>
+        //     `
+        //     return
+        // }
+
+        let fileReportUI = ''
+        for(let item of data){
+            const fileCard = `
+                <div class="overflow-hidden relative bg-white rounded-lg shadow hover:shadow-lg hover:cursor-pointer flex flex-col items-center justify-center gap-1 py-6 md:py-12 border border-gray-200 select-none">
+                        <h1 class="text-xl font-semibold text-gray-600 ml-5 md:ml-0 uppercase">${item._id}</h1>
+                        <p class="text-xl md:text-4xl font-bold ml-5 md:ml-0">${item.total}</p>
+                        <div
+                            class="flex justify-center items-center w-16 md:w-25 h-16 md:h-25 rounded-full absolute -left-4 md:-left-5"
+                            style="background-image: linear-gradient(to top, #ff0844 0%, #ffb199 100%);"
+                        >
+                            <i class="ri-file-text-line text-4xl text-white"></i>
+                        </div>
+                </div>
+            `
+            fileReportUI += fileCard
+        }
+        fileReportBox.innerHTML = fileReportUI
+    }
+    catch(err){
+        console.error(err.response ? err.response.data.message : err.message)
+        Toast.error(err.response ? err.response.data.message : err.message)
+    }
+}
