@@ -27,3 +27,4 @@ const showUserDetails = (user) => {
     email.textContent = user.email ?? 'amelia@harper.com'
     
 }
+

@@ -9,6 +9,13 @@ const Toast = new Notyf({
     duration: 2000
 })
 
+const copyEmail = (btn, email) => {
+    navigator.clipboard.writeText(email)
+    btn.innerText = "Copied!"
+    setTimeout(()=>{
+        btn.innerHTML = `<i class="ri-file-copy-line"></i>`
+    }, 1000)
+}
 
 const notFound = `
     <div class="flex flex-col items-center justify-center py-20 px-6 w-full">
@@ -98,7 +105,7 @@ const fetchRecentFiles = async () => {
         let recentFilesUI = ''
         for(let file of data){
             const fileCard = `
-                <div class="flex justify-between items-start rounded-md py-2 px-3 shadow-md shadow-indigo-700/20 hover:shadow-indigo-700/40 transition duration-300 bg-indigo-300/30">
+                <div class="flex justify-between items-start rounded-md py-2 px-3 shadow-md shadow-indigo-700/20 hover:shadow-indigo-700/40 transition duration-300 bg-indigo-100/30">
                     <div>
                         <h1 class="font-medium text-black/80 capitalize">${file.filename}</h1>
                         <small class="text-gray-500 text-sm">${(file.size/(1024*1024)).toFixed(1)}Mb</small>
@@ -142,15 +149,20 @@ const fetchRecentShared = async () => {
 
         let recentSharedUI = ''
         for(let item of data){
+        
             const fileCard = `
-                <div class="flex justify-between items-start rounded-md py-2 px-3 shadow-md shadow-indigo-700/20 hover:shadow-indigo-700/40 transition duration-300 bg-indigo-300/30">
-                    <div>
+                <div class="rounded-md py-2 px-3 shadow-md shadow-indigo-700/20 hover:shadow-indigo-700/40 transition duration-300 bg-indigo-100/30">
+                    <div class='flex justify-between'>
                         <h1 class="font-medium text-black/80 capitalize">${item.file.filename}</h1>
-                        <small class="text-gray-500 text-sm">${item.receiverEmail}</small>
-                    </div>
-                    <div class='flex flex-col items-end justify-between gap-1'>
-                        <small class="text-gray-700 text-xs rounded bg-white py-[2px] px-2 border border-indigo-200 shadow capitalize">${item.file.type}</small>
+
                         <p class="text-sm text-gray-600">${moment(item.createdAt).format('DD MMM YYYY')}</p>
+                    </div>
+                    <div class='flex justify-between'>
+                        <small class="text-gray-500 text-sm">${item.receiverEmail}</small>
+
+                        <button onclick="copyEmail(this, '${item.receiverEmail}')" class="text-gray-700 text-xs rounded bg-white py-[2px] px-1 transition duration-300 hover:cursor-pointer">
+                            <i class="ri-file-copy-line"></i>
+                        </button>
                     </div>
                 </div>
             `
@@ -175,18 +187,6 @@ const fetchFilesReport = async () => {
             }
         }
         const {data} = await axios.get('/api/dashboard', options)
-        // console.log("data", data);
-
-        // if(data.length === 0){
-        //     recentSharedBox.innerHTML = `
-        //         <div class='w-full min-h-30'>
-        //             <div class='w-full h-full rounded'>
-        //                 <h1 class='text-2xl font-medium text-black/50 text-center py-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>No file shared yet !</h1>
-        //             </div>
-        //         </div>
-        //     `
-        //     return
-        // }
 
         let fileReportUI = ''
         for(let item of data){

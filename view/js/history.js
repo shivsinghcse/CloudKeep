@@ -10,6 +10,14 @@ const Toast = new Notyf({
     duration: 2000
 })
 
+const copyEmail = (btn, email) => {
+    navigator.clipboard.writeText(email)
+    btn.innerText = "Copied!"
+    setTimeout(()=>{
+        btn.innerHTML = `<i class="ri-file-copy-line"></i>`
+    }, 1000)
+}
+
 
 let tableUI = "";
 let cardUI = "";
@@ -73,7 +81,15 @@ const fetchHistory = async() => {
                 <tr class="text-gray-500 border-b border-gray-100 hover:bg-gray-50">
                     <td class="py-4 px-4 capitalize">${item.file.filename}</td>
                     <td class="py-4 px-4">${(item.file.size/(1024*1024)).toFixed(1)} Mb</td>
-                    <td class="px-4 break-all">${item.receiverEmail}</td>
+                    <td class="px-4 break-all">
+                        <div class='flex gap-4'>
+                            <p class="text-gray-500 text-sm">${item.receiverEmail}</p>
+
+                            <button onclick="copyEmail(this, '${item.receiverEmail}')" class="text-gray-700 text-xs rounded bg-gray-100 hover:bg-gray-200 hover:cursor-pointer py-[2px] px-1 transition duration-300">
+                                <i class="ri-file-copy-line"></i>
+                            </button>
+                        </div>
+                    </td>
                     <td class="px-4 whitespace-nowrap">${moment(item.createdAt).format('DD MMM YYYY hh:mm A')}</td>
                 </tr>
             `;
@@ -87,7 +103,13 @@ const fetchHistory = async() => {
                         <span class="text-xs bg-gray-100 px-2 py-1 rounded">Shared</span>
                     </div>
 
-                    <p class="text-sm text-gray-500 break-all">${item.receiverEmail}</p>
+                    <div class='flex justify-between'>
+                        <p class="text-gray-500 text-sm">${item.receiverEmail}</p>
+
+                        <button onclick="copyEmail(this, '${item.receiverEmail}')" class="text-gray-700 text-xs rounded bg-gray-100 hover:bg-gray-200 hover:cursor-pointer py-[2px] px-1 transition duration-300">
+                            <i class="ri-file-copy-line"></i>
+                        </button>
+                    </div>
 
                     <div class="flex justify-between text-sm text-gray-400">
                         <span>${(item.file.size/(1024*1024)).toFixed(1)} Mb</span>

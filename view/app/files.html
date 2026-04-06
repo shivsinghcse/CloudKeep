@@ -42,7 +42,13 @@
                     <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full border-2 border-[#312e81]"></span>
                 </div>
                 <h1 class="text-base font-semibold text-white capitalize mt-1" id="userName">Amelia Harper</h1>
-                <p class="text-xs text-indigo-300/80 mt-0.5" id="userEmail">amelia@harper.com</p>
+                <div class='flex gap-4'>
+                    <p class="text-xs text-indigo-300/80 mt-0.5" id="userEmail">amelia@harper.com</p>
+
+                    <button onclick="copyAdminEmail(this)" class="text-indigo-50 text-xs rounded bg-indigo-400/80 py-[2px] hover:cursor-pointer px-1 transition duration-300">
+                        <i class="ri-file-copy-line"></i>
+                    </button>
+                </div>
             </div>
 
             <!-- Nav Links -->
@@ -179,7 +185,9 @@
         </div>
     </div>
 
+
     <script src="../js/env.js"></script>
+    <script src="../js/common.js"></script>
     <script src="../js/layout.js"></script>
     <script src="../js/myFiles.js"></script>
 </body>

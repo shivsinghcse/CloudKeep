@@ -130,9 +130,6 @@ const shareFile = async (req, res) => {
         const { email, fileId, ext, filename, size } = req.body
         const link = `${process.env.SERVER}/api/file/download/${fileId}`
 
-        console.log(link);
-        return
-
         if(!email || !fileId || !ext || !filename || !size)
         {
             return res.status(200).json({ message: 'Invalid Information' })
@@ -170,7 +167,7 @@ const fetchShared = async (req, res) => {
         .populate('file', 'filename size type')
         .sort({createdAt: -1})
         .limit(limit)
-
+        console.log(history);
         res.status(200).json(history)
     }
     catch(err)
