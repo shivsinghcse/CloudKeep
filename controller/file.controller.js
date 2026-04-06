@@ -1,7 +1,6 @@
 const FileModel = require('../model/file.model')
 const cloudinary = require('../config/cloudinary');
 const axios = require("axios");
-const { response } = require('express');
 
 
 const createFile = async (req, res) => {

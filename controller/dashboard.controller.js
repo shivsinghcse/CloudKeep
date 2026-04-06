@@ -1,6 +1,5 @@
 const FileModel = require("../model/file.model")
 
-FileModel
 
 const fetchDashboard = async (req, res) => {
     try

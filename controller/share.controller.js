@@ -129,7 +129,7 @@ const shareFile = async (req, res) => {
     try {
         const { email, fileId, ext, filename, size } = req.body
         const link = `${process.env.SERVER}/api/file/download/${fileId}`
-
+        
         if(!email || !fileId || !ext || !filename || !size)
         {
             return res.status(200).json({ message: 'Invalid Information' })
@@ -138,7 +138,7 @@ const shareFile = async (req, res) => {
         const payload = {
             user: req.user.id,
             receiverEmail: email,
-            file: fileId
+            file: fileId, 
         }
 
         await Promise.all([
@@ -167,7 +167,6 @@ const fetchShared = async (req, res) => {
         .populate('file', 'filename size type')
         .sort({createdAt: -1})
         .limit(limit)
-        console.log(history);
         res.status(200).json(history)
     }
     catch(err)

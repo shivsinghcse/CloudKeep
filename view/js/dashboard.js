@@ -135,7 +135,7 @@ const fetchRecentShared = async () => {
             }
         }
         const {data} = await axios.get('/api/share?limit=5', options)
-
+        
         if(data.length === 0){
             recentSharedBox.innerHTML = `
                 <div class='w-full min-h-30'>
