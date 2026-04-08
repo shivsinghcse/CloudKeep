@@ -12,9 +12,9 @@ const Toast = new Notyf({
 
 const copyEmail = (btn, email) => {
     navigator.clipboard.writeText(email)
-    btn.innerText = "Copied!"
+    btn.innerHTML = `<i class="ri-check-double-line text-xs text-emerald-400"></i>`;
     setTimeout(()=>{
-        btn.innerHTML = `<i class="ri-file-copy-line"></i>`
+        btn.innerHTML = `<i class="ri-file-copy-line text-xs"></i>`;
     }, 1000)
 }
 
@@ -75,54 +75,80 @@ const fetchHistory = async() => {
         }
 
         data.forEach((item, index) => {
-            
-            // TABLE (desktop)
-            tableUI += `
-                <tr class="text-gray-500 border-b border-gray-100 hover:bg-gray-50">
-                    <td class="py-4 px-4 capitalize">${item.file.filename}</td>
-                    <td class="py-4 px-4">${(item.file.size/(1024*1024)).toFixed(1)} Mb</td>
-                    <td class="px-4 break-all">
-                        <div class='flex gap-4'>
-                            <p class="text-gray-500 text-sm">${item.receiverEmail}</p>
 
-                            <button onclick="copyEmail(this, '${item.receiverEmail}')" class="text-gray-700 text-xs rounded bg-gray-100 hover:bg-gray-200 hover:cursor-pointer py-[2px] px-1 transition duration-300">
-                                <i class="ri-file-copy-line"></i>
-                            </button>
-                        </div>
-                    </td>
-                    <td class="px-4 whitespace-nowrap">${moment(item.createdAt).format('DD MMM YYYY hh:mm A')}</td>
-                </tr>
-            `;
+    const fileIcon = {
+        'pdf': 'ri-file-pdf-line text-rose-400',
+        'jpg': 'ri-image-line text-blue-400',
+        'jpeg': 'ri-image-line text-blue-400',
+        'png': 'ri-image-line text-blue-400',
+        'mp4': 'ri-video-line text-purple-400',
+        'mp3': 'ri-music-line text-green-400',
+        'doc': 'ri-file-word-line text-blue-500',
+        'docx': 'ri-file-word-line text-blue-500',
+        'zip': 'ri-file-zip-line text-amber-400',
+    }[item.file.type?.toLowerCase()] || 'ri-file-line text-gray-400';
 
-            // CARD (mobile)
-            cardUI += `
-                <div class="bg-white rounded-lg shadow p-4 space-y-3 border border-gray-200">
-                    
-                    <div class="flex justify-between items-start">
-                        <h1 class="font-medium text-gray-700 capitalize">${item.file.filename}</h1>
-                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">Shared</span>
-                    </div>
+    const size = item.file.size < 1024 * 1024
+        ? (item.file.size / 1024).toFixed(1) + ' KB'
+        : (item.file.size / (1024 * 1024)).toFixed(1) + ' MB';
 
-                    <div class='flex justify-between'>
-                        <p class="text-gray-500 text-sm">${item.receiverEmail}</p>
+    const date = moment(item.createdAt).format('DD MMM YYYY hh:mm A');
 
-                        <button onclick="copyEmail(this, '${item.receiverEmail}')" class="text-gray-700 text-xs rounded bg-gray-100 hover:bg-gray-200 hover:cursor-pointer py-[2px] px-1 transition duration-300">
-                            <i class="ri-file-copy-line"></i>
-                        </button>
-                    </div>
-
-                    <div class="flex justify-between text-sm text-gray-400">
-                        <span>${(item.file.size/(1024*1024)).toFixed(1)} Mb</span>
-                        <span>${moment(item.createdAt).format('DD MMM YYYY hh:mm A')}</span>
-                    </div>
+    // TABLE (desktop)
+    tableUI += `
+        <tr class="text-gray-500 border-b border-gray-100 hover:bg-gray-50 transition select-none">
+            <td class="py-3.5 pl-6 pr-4">
+                <div class="flex items-center gap-2.5">
+                    <i class="${fileIcon} text-base"></i>
+                    <span class="text-gray-700 text-sm font-medium capitalize">${item.file.filename}</span>
                 </div>
-            `;
-        });
+            </td>
+            <td class="pr-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-sm">${item.receiverEmail}</span>
+                    <button onclick="copyEmail(this, '${item.receiverEmail}')"
+                        class="p-1 rounded-md bg-gray-50 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition">
+                        <i class="ri-file-copy-line text-xs"></i>
+                    </button>
+                </div>
+            </td>
+            <td class="text-sm pr-4">${size}</td>
+            <td class="text-sm pr-4 whitespace-nowrap">${date}</td>
+        </tr>
+    `;
 
-        table.innerHTML = tableUI;
-        cards.innerHTML = cardUI;
+    // CARD (mobile)
+    cardUI += `
+        <div class="bg-white rounded-xl border border-gray-200 p-4 space-y-3 select-none">
 
-    }
+            <div class="flex justify-between items-start">
+                <div class="flex items-center gap-2">
+                    <i class="${fileIcon} text-lg"></i>
+                    <span class="font-medium text-gray-700 text-sm capitalize">${item.file.filename}</span>
+                </div>
+                <span class="text-xs bg-violet-50 text-violet-500 px-2 py-1 rounded-md font-medium">Shared</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-500 break-all">${item.receiverEmail}</span>
+                <button onclick="copyEmail(this, '${item.receiverEmail}')"
+                    class="ml-2 p-1.5 rounded-md bg-gray-50 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition flex-shrink-0">
+                    <i class="ri-file-copy-line text-xs"></i>
+                </button>
+            </div>
+
+            <div class="flex justify-between text-xs text-gray-400 pt-2 border-t border-gray-100">
+                <span>${size}</span>
+                <span>${date}</span>
+            </div>
+
+        </div>
+    `;
+});
+
+table.innerHTML = tableUI;
+cards.innerHTML = cardUI;
+}
     catch(err)
     {
         Toast.error(err.response ? err.response.data.message : err.message)

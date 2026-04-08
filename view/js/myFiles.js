@@ -32,6 +32,10 @@ const uploadFile = async (e) => {
                 const percentageValue = Math.floor((loaded*100)/total)
                 progressbar.style.width = percentageValue+'%'
                 progressbar.innerHTML = percentageValue+'%'
+
+                // wherever you update progressbar width, also update the label
+                // document.getElementById('progressbar').style.width = progress + '%';
+                // document.getElementById('progressLabel').textContent = progress + '%';
             },
             headers: {
                 Authorization: `Bearer ${token}`
@@ -114,58 +118,87 @@ const fetchFiles = async () => {
         }
         data.forEach(file => {
 
+            const fileIcon = {
+                'pdf': 'ri-file-pdf-line text-rose-400',
+                'jpg': 'ri-image-line text-blue-400',
+                'jpeg': 'ri-image-line text-blue-400',
+                'png': 'ri-image-line text-blue-400',
+                'mp4': 'ri-video-line text-purple-400',
+                'mp3': 'ri-music-line text-green-400',
+                'doc': 'ri-file-word-line text-blue-500',
+                'docx': 'ri-file-word-line text-blue-500',
+                'zip': 'ri-file-zip-line text-amber-400',
+            }[file.type.toLowerCase()] || 'ri-file-line text-gray-400';
+
+            const size = file.size < 1024 * 1024
+                ? (file.size / 1024).toFixed(1) + ' KB'
+                : (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+            const date = moment(file.createdAt).format('DD MMM YYYY hh:mm A');
+
         // TABLE UI (desktop)
         tableUI += `
-            <tr class="text-gray-500 border-b border-gray-100 select-none">
-                <td class="py-4 px-4 capitalize">${file.filename}</td>
-                <td class="uppercase">${file.type}</td>
-                <td>${(file.size/(1024*1024)).toFixed(1)} Mb</td>
-                <td>${moment(file.createdAt).format('DD MMM YYYY hh:mm A')}</td>
-                <td>
-                    <div class="flex gap-2">
-                        <button onclick="deleteFile('${file._id}', this)" class="bg-rose-400 text-white px-2 py-1 rounded">
-                            <i class="ri-delete-bin-4-line"></i>
-                        </button>
-                        <button onclick="downloadFile('${file._id}', '${file.filename}', this)" class="bg-green-400 text-white px-2 py-1 rounded">
-                            <i class="ri-download-line"></i>
-                        </button>
-                        <button onclick="openModal('${file._id}','${file.filename}','${file.type}','${file.size}')" class="bg-amber-400 text-white px-2 py-1 rounded">
-                            <i class="ri-share-line"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+            <tr class="text-gray-500 border-b border-gray-100 hover:bg-gray-50 transition select-none">
+            <td class="py-3.5 pl-6 pr-4">
+                <div class="flex items-center gap-2.5">
+                    <i class="${fileIcon} text-base"></i>
+                    <span class="text-gray-700 text-sm font-medium capitalize">${file.filename}</span>
+                </div>
+            </td>
+            <td class="pr-4">
+                <span class="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded-md uppercase">${file.type}</span>
+            </td>
+            <td class="text-sm pr-4">${size}</td>
+            <td class="text-sm pr-4">${date}</td>
+            <td class="pr-4">
+                <div class="flex gap-1.5">
+                    <button onclick="deleteFile('${file._id}', this)" 
+                        class="p-1.5 rounded-lg bg-rose-50 text-rose-400 hover:bg-rose-100 transition" title="Delete">
+                        <i class="ri-delete-bin-4-line text-sm"></i>
+                    </button>
+                    <button onclick="downloadFile('${file._id}', '${file.filename}', this)" 
+                        class="p-1.5 rounded-lg bg-green-50 text-green-500 hover:bg-green-100 transition" title="Download">
+                        <i class="ri-download-line text-sm"></i>
+                    </button>
+                    <button onclick="openModal('${file._id}','${file.filename}','${file.type}','${file.size}')" 
+                        class="p-1.5 rounded-lg bg-violet-50 text-violet-500 hover:bg-violet-100 transition" title="Share">
+                        <i class="ri-share-line text-sm"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
         `;
 
         // CARD UI (mobile)
         cardUI += `
-            <div class="bg-white rounded-lg shadow p-4 space-y-3 border border-gray-200 select-none">
-                
-                <div class="flex justify-between items-start">
-                    <h1 class="font-medium text-gray-700 capitalize">${file.filename}</h1>
-                    <span class="text-xs bg-gray-100 px-2 py-1 rounded uppercase">${file.type}</span>
+            <div class="bg-white rounded-xl border border-gray-200 p-4 space-y-3 select-none">
+            <div class="flex justify-between items-start">
+                <div class="flex items-center gap-2">
+                    <i class="${fileIcon} text-lg"></i>
+                    <span class="font-medium text-gray-700 text-sm capitalize">${file.filename}</span>
                 </div>
-
-                <div class="text-sm text-gray-500 flex justify-between">
-                    <span>Size: ${(file.size/(1024*1024)).toFixed(1)} Mb</span>
-                    <span>${moment(file.createdAt).format('DD MMM YYYY hh:mm A')}</span>
-                </div>
-
-                <div class="flex justify-end gap-2 pt-2 border-t border-gray-300">
-                    <button onclick="deleteFile('${file._id}', this)" class="bg-rose-400 text-white px-3 py-1 rounded">
-                        <i class="ri-delete-bin-4-line"></i>
-                    </button>
-
-                    <button onclick="downloadFile('${file._id}', '${file.filename}', this)" class="bg-green-400 text-white px-3 py-1 rounded">
-                        <i class="ri-download-line"></i>
-                    </button>
-
-                    <button onclick="openModal('${file._id}','${file.filename}','${file.type}','${file.size}')" class="bg-amber-400 text-white px-3 py-1 rounded">
-                        <i class="ri-share-line"></i>
-                    </button>
-                </div>
-
+                <span class="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded-md uppercase">${file.type}</span>
             </div>
+
+            <div class="text-xs text-gray-400 flex justify-between">
+                <span>${size}</span>
+                <span>${date}</span>
+            </div>
+
+            <div class="flex justify-end gap-1.5 pt-2.5 border-t border-gray-100">
+                <button onclick="deleteFile('${file._id}', this)" 
+                    class="p-2 rounded-lg bg-rose-50 text-rose-400 hover:bg-rose-100 transition">
+                    <i class="ri-delete-bin-4-line text-sm"></i>
+                </button>
+                <button onclick="downloadFile('${file._id}', '${file.filename}', this)" 
+                    class="p-2 rounded-lg bg-green-50 text-green-500 hover:bg-green-100 transition">
+                    <i class="ri-download-line text-sm"></i>
+                </button>
+                <button onclick="openModal('${file._id}','${file.filename}','${file.type}','${file.size}')" 
+                    class="p-2 rounded-lg bg-violet-50 text-violet-500 hover:bg-violet-100 transition">
+                    <i class="ri-share-line text-sm"></i>
+                </button>
+            </div>
+        </div>
         `;
         });
 

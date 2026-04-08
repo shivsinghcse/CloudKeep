@@ -27,12 +27,13 @@
 <body>
     <div class="bg-gray-100 h-screen">
           <aside 
-            class="fixed top-18 md:top-0 left-0 h-full w-64 
+            class="fixed top-18 md:top-0 left-0 h-full w-60 
             bg-gradient-to-b from-[#1e1b4b] via-[#312e81] to-[#1e1b4b]
-            transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-50 space-y-6
+            transform -translate-x-full z-50 space-y-6
             shadow-2xl shadow-indigo-950/50 border-r border-indigo-800/30"
             id="sidebar"
-        >
+            >
+            <div class="hidden md:block h-[73px]"></div>
             <!-- Profile Section -->
             <div class="flex flex-col items-center mt-8 pb-6 mx-4 border-b border-indigo-700/30">
                 <div class="relative mb-3">
@@ -44,9 +45,9 @@
                 <h1 class="text-base font-semibold text-white capitalize mt-1" id="userName">Amelia Harper</h1>
                 <div class='flex gap-4'>
                     <p class="text-xs text-indigo-300/80 mt-0.5" id="userEmail">amelia@harper.com</p>
-
-                    <button onclick="copyAdminEmail(this)" class="text-indigo-50 text-xs rounded bg-indigo-400/80 py-[2px] hover:cursor-pointer px-1 transition duration-300">
-                        <i class="ri-file-copy-line"></i>
+                    <button onclick="copyAdminEmail(this)" 
+                        class="text-indigo-300 hover:text-white transition duration-200 hover:cursor-pointer ml-1">
+                        <i class="ri-file-copy-line text-xs"></i>
                     </button>
                 </div>
             </div>
@@ -100,15 +101,15 @@
         </aside>
 
 
-        <section class="md:ml-64 transition-all duration-300" id="section">
-            <nav class="bg-white px-6 py-4 w-full shadow-lg flex justify-between items-center">
-                <div class="flex items-center gap-1 select-none cursor-pointer">
-                    <i class="ri-upload-cloud-line text-4xl text-violet-600"></i>
-                    <h1 class="text-2xl font-semibold">Cloud<span class="text-violet-600">Keep</span></h1>
+        <section class="md:ml-60 transition-all duration-300" id="section">
+            <nav class="bg-white px-6 py-4 w-full shadow-sm flex justify-between items-center">
+                <div class="flex items-center gap-2 select-none cursor-pointer">
+                    <i class="ri-upload-cloud-line text-3xl text-violet-600"></i>
+                    <h1 class="text-2xl font-semibold tracking-tight">Cloud<span class="text-violet-600">Keep</span></h1>
                 </div>
 
                 <div class="space-x-2">
-                    <button onclick="logout()" class=" bg-gray-100 px-3 p-2 hover:cursor-pointer hover:bg-gray-200 rounded">
+                    <button onclick="logout()" class=" bg-gray-100 px-3 p-2 hover:cursor-pointer hover:bg-gray-200 rounded md:hidden">
                         <i class="ri-logout-circle-r-line"></i>
                     </button>
 
@@ -121,20 +122,30 @@
             <div class="p-6 space-y-4 ">
                 <div class="flex justify-between items-center">
                     <h1 class="text-lg font-medium select-none">My Files</h1>
-                    <button class="select-none bg-violet-500 hover:bg-violet-600 text-white py-2 px-4 rounded" onclick="toggleDrawer()">
+                    <button class="select-none bg-violet-600 hover:bg-violet-700 active:scale-[0.99] text-white py-2 px-4 rounded-lg text-sm font-medium transition" onclick="toggleDrawer()">
                         <i class="ri-add-line"></i>
-                        <label>Add File</label>
+                        <span>Add File</span>
                     </button>
                 </div>
                 <div class="hidden md:block w-full overflow-x-auto">
-                    <table class="w-full min-w-175 bg-white">
-                    <tr class="bg-slate-900 text-slate-200 text-left">
-                        <th class="font-medium py-2 pl-6">Filename</th>
-                        <th class="font-medium">Type</th>
-                        <th class="font-medium">Size</th>
-                        <th class="font-medium">Created</th>
-                        <th class="font-medium">Action</th>
-                    </tr>
+                    <table class="w-full bg-white border border-gray-200 rounded-lg overflow-hidden shadow">
+                        <!-- <tr class="bg-slate-900 text-slate-200 text-left">
+                            <th class="font-medium py-3 pl-6">Filename</th>
+                            <th class="font-medium">Type</th>
+                            <th class="font-medium">Size</th>
+                            <th class="font-medium">Created</th>
+                            <th class="font-medium">Action</th>
+                        </tr> -->
+                        <thead>
+                            <tr class="bg-gray-50 text-gray-500 text-left border-b border-gray-200">
+                                <th class="font-medium py-3 pl-6 text-xs uppercase tracking-wider">Filename</th>
+                                <th class="font-medium text-xs uppercase tracking-wider">Type</th>
+                                <th class="font-medium text-xs uppercase tracking-wider">Size</th>
+                                <th class="font-medium text-xs uppercase tracking-wider">Created</th>
+                                <th class="font-medium text-xs uppercase tracking-wider">Action</th>
+                            </tr>
+                        </thead>
+                    
 
                     <tbody id="tbody">
                     </tbody>
@@ -152,34 +163,41 @@
             <div class="flex justify-between items-center">
                 <h1 class="text-lg font-medium text-gray-600">Adding a new file</h1>
                 <button onclick="toggleDrawer()">
-                    <i class="ri-close-circle-fill hover:text-rose-600 text-xl"></i>
+                    <i class="ri-close-circle-fill text-violet-600 hover:text-violet-700 text-xl"></i>
                 </button>
             </div>
-            <div class="h-px bg-gray-200 -mx-6"></div>
+            <div class="border-t border-gray-100 -mx-6"></div>
             <form class="space-y-6" onsubmit="uploadFile(event)">
-                <div class="flex flex-col gap-2">
-                    <label class="text-gray-600 font-medium">Filename</label>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-sm font-medium text-gray-700">Filename</label>
                     <input
-                         class="py-2 px-3 border border-gray-300 rounded" name="filename" placeholder="Enter filename"
-                         required
+                        class="border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900 bg-gray-50 transition focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-100"
+                        name="filename" placeholder="Enter filename" required
                     />
                 </div>
-                <div class="flex flex-col gap-2">
-                    <label class="text-gray-600 font-medium">Choose a file</label>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-sm font-medium text-gray-700">Choose a file</label>
                     <input
-                        type="file"
-                        name="myFile"
-                        class="py-2 px-3 border border-gray-300 rounded" placeholder="Enter filename"
+                        type="file" name="myFile"
+                        class="border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-500 bg-gray-50 transition
+                        file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-medium
+                        file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
                         required
                     />
                 </div>
-
-                <button id="upload-btn" class="py-2 px-6 bg-rose-400 hover:bg-rose-500 text-white rounded font-medium cursor-pointer">UPLOAD NOW</button>
+                
+                <button id="upload-btn" class="py-2.5 px-6 bg-violet-600 hover:bg-violet-700 active:scale-[0.99] text-white rounded-lg text-sm font-medium transition cursor-pointer w-full">
+                    Upload now
+                </button>
             </form>
 
-            <div class="bg-gray-100 h-4 rounded-lg">
-                <div class="h-full rounded-lg bg-green-600 text-xs text-white text-center" id="progressbar" style="width: 0;">
-                    
+            <div class="space-y-1.5">
+                <div class="flex justify-between">
+                    <label class="text-xs font-medium text-gray-500">Upload progress</label>
+                    <span class="text-xs text-gray-400" id="progressLabel">0%</span>
+                </div>
+                <div class="bg-gray-100 h-2 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full bg-violet-500 transition-all duration-300 text-xs text-white text-center" id="progressbar" style="width: 0%"></div>
                 </div>
             </div>
         </div>

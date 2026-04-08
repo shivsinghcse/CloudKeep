@@ -3,77 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloudKeep | Dashboard</title>
+    <title>Dashboard — CloudKeep</title>
     <link rel="shortcut icon" href="../images/cloud.png" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link
-        href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
-        rel="stylesheet"
-    />
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
     <script src="../js/session.js"></script>
     <script src="../js/preGaurd.js"></script>
-
 </head>
 <body>
-    <div class="bg-gray-100 h-screen">
-        <!-- <aside 
-            class="fixed top-18 md:top-0 left-0 h-full w-64 bg-gradient-to-r from-cyan-500 to-blue-500 
-            transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-50 space-y-6"
-            id="sidebar"
-        >
-            <div class="flex flex-col items-center mt-2">
-                <img src="../images/avt.png"  width="80" id="userImage"/>
-                <h1 class="text-lg font-medium text-white capitalize" id="userName">Amelia Harper</h1>
-                <p class="text-sm text-gray-100" id="userEmail">amelia@harper.com</p>
-            </div>
-
-            <div class="px-6 flex flex-col gap-4">
-                <a href="dashboard">
-                    <button class="w-full bg-rose-400 text-white py-2.5 rounded hover:bg-rose-600">
-                        <i class="ri-apps-line"></i>
-                        <label>Dashboard</label>
-                    </button>
-                </a>
-
-                <a href="files">
-                    <button class="w-full bg-rose-400 text-white py-2.5 rounded hover:bg-rose-600">
-                        <i class="ri-file-line"></i>
-                        <label>My Files</label>
-                    </button>
-                </a>
-
-                <a href="history">
-                    <button class="w-full bg-rose-400 text-white py-2.5 rounded hover:bg-rose-600">
-                        <i class="ri-file-history-line"></i>
-                        <label>History</label>
-                    </button>
-                </a>
-
-                <button onclick="logout()" class="w-full bg-rose-400 text-white py-2.5 rounded hover:bg-rose-600">
-                        <i class="ri-logout-circle-r-line"></i>
-                        <label>Logout</label>
-                </button>
-
-            </div>
-        </aside>
- -->
+    <div class="bg-gray-100 min-h-screen">
 
         <aside 
-            class="fixed top-18 md:top-0 left-0 h-full w-64 
+            class="fixed top-18 md:top-0 left-0 h-full w-60 
             bg-gradient-to-b from-[#1e1b4b] via-[#312e81] to-[#1e1b4b]
-            transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-50 space-y-6
+            transform -translate-x-full z-50 space-y-6
             shadow-2xl shadow-indigo-950/50 border-r border-indigo-800/30"
-            id="sidebar"
-        >
-            <!-- Profile Section -->
+            id="sidebar">
+            <div class="hidden md:block h-[73px]"></div>
             <div class="flex flex-col items-center mt-8 pb-6 mx-4 border-b border-indigo-700/30">
                 <div class="relative mb-3">
                     <div class="w-20 h-20 rounded-2xl ring-2 ring-indigo-400/40 ring-offset-2 ring-offset-[#312e81] overflow-hidden shadow-lg">
@@ -82,105 +37,92 @@
                     <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full border-2 border-[#312e81]"></span>
                 </div>
                 <h1 class="text-base font-semibold text-white capitalize mt-1" id="userName">Amelia Harper</h1>
-                <div class='flex gap-4'>
+                <div class="flex items-center gap-2">
                     <p class="text-xs text-indigo-300/80 mt-0.5" id="userEmail">amelia@harper.com</p>
-
-                    <button onclick="copyAdminEmail(this)" class="text-indigo-50 text-xs rounded bg-indigo-400/80 py-[2px] hover:cursor-pointer px-1 transition duration-300">
-                        <i class="ri-file-copy-line"></i>
+                    <button onclick="copyAdminEmail(this)" class="text-indigo-300 hover:text-white transition duration-200 cursor-pointer">
+                        <i class="ri-file-copy-line text-xs"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Nav Links -->
             <div class="px-4 flex flex-col gap-1.5">
-
                 <p class="text-[10px] font-semibold uppercase tracking-widest text-indigo-400/50 px-3 mb-1">Menu</p>
-
                 <a href="dashboard">
-                    <button class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl
-                        text-indigo-200 hover:text-white
-                        hover:bg-white/10 active:bg-white/15
-                        transition-all duration-200 group">
+                    <button class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-indigo-200 hover:text-white hover:bg-white/10 active:bg-white/15 transition-all duration-200 group">
                         <i class="ri-apps-line text-lg text-indigo-400 group-hover:text-indigo-200 transition-colors"></i>
                         <span class="text-sm font-medium">Dashboard</span>
                     </button>
                 </a>
-
                 <a href="files">
-                    <button class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl
-                        text-indigo-200 hover:text-white
-                        hover:bg-white/10 active:bg-white/15
-                        transition-all duration-200 group">
+                    <button class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-indigo-200 hover:text-white hover:bg-white/10 active:bg-white/15 transition-all duration-200 group">
                         <i class="ri-file-line text-lg text-indigo-400 group-hover:text-indigo-200 transition-colors"></i>
                         <span class="text-sm font-medium">My Files</span>
                     </button>
                 </a>
-
                 <a href="history">
-                    <button class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl
-                        text-indigo-200 hover:text-white
-                        hover:bg-white/10 active:bg-white/15
-                        transition-all duration-200 group">
+                    <button class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-indigo-200 hover:text-white hover:bg-white/10 active:bg-white/15 transition-all duration-200 group">
                         <i class="ri-file-history-line text-lg text-indigo-400 group-hover:text-indigo-200 transition-colors"></i>
                         <span class="text-sm font-medium">History</span>
                     </button>
                 </a>
-
                 <div class="mt-4 pt-4 border-t border-indigo-700/30">
-                    <button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl
-                        text-rose-300/80 hover:text-rose-200
-                        hover:bg-rose-500/10 active:bg-rose-500/20
-                        transition-all duration-200 group">
+                    <button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-rose-300/80 hover:text-rose-200 hover:bg-rose-500/10 active:bg-rose-500/20 transition-all duration-200 group">
                         <i class="ri-logout-circle-r-line text-lg text-rose-400/70 group-hover:text-rose-300 transition-colors"></i>
                         <span class="text-sm font-medium">Logout</span>
                     </button>
                 </div>
-
             </div>
         </aside>
 
-        <section class="md:ml-64 transition-all duration-300" id="section">
-            <nav class="bg-white px-6 py-4 w-full shadow-lg flex justify-between items-center">
-                <div class="flex items-center gap-1 select-none cursor-pointer">
-                    <i class="ri-upload-cloud-line text-4xl text-violet-600"></i>
-                    <h1 class="text-2xl font-semibold">Cloud<span class="text-violet-600">Keep</span></h1>
+        <section class="md:ml-60 transition-all duration-300" id="section">
+            <nav class="bg-white px-6 py-4 w-full shadow-sm flex justify-between items-center">
+                <div class="flex items-center gap-2 select-none cursor-pointer">
+                    <i class="ri-upload-cloud-line text-3xl text-violet-600"></i>
+                    <h1 class="text-2xl font-semibold tracking-tight">Cloud<span class="text-violet-600">Keep</span></h1>
                 </div>
-
                 <div class="space-x-2">
-                    <button onclick="logout()" title="Logout" class=" bg-gray-100 px-3 p-2 hover:cursor-pointer hover:bg-gray-200 rounded">
+                    <button onclick="logout()" title="Logout" class="bg-gray-100 px-3 p-2 hover:cursor-pointer hover:bg-gray-200 rounded md:hidden">
                         <i class="ri-logout-circle-r-line"></i>
                     </button>
-
-                    <button onclick="toggleSidebar()" class=" bg-gray-100 px-3 p-2 hover:cursor-pointer hover:bg-gray-200 rounded">
+                    <button onclick="toggleSidebar()" class="bg-gray-100 px-3 p-2 hover:cursor-pointer hover:bg-gray-200 rounded">
                         <i class="ri-menu-2-line"></i>
                     </button>
                 </div>
             </nav>
 
-            <div id="dashboard" class="p-6 space-y-4 ">
-                <h1 class="text-lg font-medium select-none">Dashboard</h1>
-                <div id="file-report-box" class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                  <!-- file reports -->
+            <div id="dashboard" class="p-6 space-y-6">
+
+                <!-- Page title -->
+                <div>
+                    <h1 class="text-lg font-semibold text-gray-800 select-none">Dashboard</h1>
+                    <p class="text-sm text-gray-400 mt-0.5" id="greetingText">Good morning</p>
                 </div>
 
-                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="overflow-hidden relative bg-white rounded-lg shadow hover:shadow-lg p-6 select-none space-y-3">
-                        <h1 class="text-xl font-medium text-black border-b border-b-gray-200 pb-3 mb-5">Recent Files</h1>
-
-                        <div class="space-y-6" id="recent-files-box">
-                            <!--  recent files -->
-                        </div>
-                    </div>
-
-                    <div class="overflow-hidden relative bg-white rounded-lg shadow hover:shadow-lg p-6 select-none space-y-3">
-                        <h1 class="text-xl font-medium text-black border-b border-b-gray-200 pb-3 mb-5">Recent Shared</h1>
-
-                        <div class="space-y-6" id="recent-shared-box">
-                            <!-- recent shared -->
-                        </div>
-                    </div>
+                <!-- File type report cards -->
+                <div id="file-report-box" class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- injected by JS -->
                 </div>
-         
+
+                <!-- Recent sections -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <div class="bg-white rounded-xl border border-gray-200 p-5 select-none">
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-100">
+                            <h2 class="text-sm font-semibold text-gray-700">Recent files</h2>
+                            <a href="files" class="text-xs text-violet-500 hover:text-violet-700 font-medium">View all</a>
+                        </div>
+                        <div class="space-y-3" id="recent-files-box"></div>
+                    </div>
+
+                    <div class="bg-white rounded-xl border border-gray-200 p-5 select-none">
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-100">
+                            <h2 class="text-sm font-semibold text-gray-700">Recent shared</h2>
+                            <a href="history" class="text-xs text-violet-500 hover:text-violet-700 font-medium">View all</a>
+                        </div>
+                        <div class="space-y-3" id="recent-shared-box"></div>
+                    </div>
+
+                </div>
             </div>
         </section>
     </div>
@@ -189,4 +131,4 @@
     <script src="../js/layout.js"></script>
     <script src="../js/dashboard.js"></script>
 </body>
-</html> 
+</html>

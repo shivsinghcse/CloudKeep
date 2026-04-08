@@ -25,12 +25,13 @@
 <body>
     <div class="bg-gray-100 h-screen">
           <aside 
-            class="fixed top-18 md:top-0 left-0 h-full w-64 
+            class="fixed top-18 md:top-0 left-0 h-full w-60 
             bg-gradient-to-b from-[#1e1b4b] via-[#312e81] to-[#1e1b4b]
-            transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-50 space-y-6
+            transform -translate-x-full z-50 space-y-6
             shadow-2xl shadow-indigo-950/50 border-r border-indigo-800/30"
             id="sidebar"
-        >
+            >
+            <div class="hidden md:block h-[73px]"></div>
             <!-- Profile Section -->
             <div class="flex flex-col items-center mt-8 pb-6 mx-4 border-b border-indigo-700/30">
                 <div class="relative mb-3">
@@ -42,9 +43,9 @@
                 <h1 class="text-base font-semibold text-white capitalize mt-1" id="userName">Amelia Harper</h1>
                 <div class='flex gap-4'>
                     <p class="text-xs text-indigo-300/80 mt-0.5" id="userEmail">amelia@harper.com</p>
-
-                    <button onclick="copyAdminEmail(this)" class="text-indigo-50 text-xs rounded bg-indigo-400/80 py-[2px] hover:cursor-pointer px-1 transition duration-300">
-                        <i class="ri-file-copy-line"></i>
+                    <button onclick="copyAdminEmail(this)" 
+                        class="text-indigo-300 hover:text-white transition duration-200 hover:cursor-pointer ml-1">
+                        <i class="ri-file-copy-line text-xs"></i>
                     </button>
                 </div>
             </div>
@@ -98,15 +99,15 @@
         </aside>
 
 
-        <section class="md:ml-64 transition-all duration-300" id="section">
-            <nav class="bg-white px-6 py-4 w-full shadow-lg flex justify-between items-center">
-                <div class="flex items-center gap-1 select-none">
-                    <i class="ri-upload-cloud-line text-4xl text-violet-600"></i>
-                    <h1 class="text-2xl font-semibold">Cloud<span class="text-violet-600">Keep</span></h1>
+        <section class="md:ml-60 transition-all duration-300" id="section">
+            <nav class="bg-white px-6 py-4 w-full shadow-sm flex justify-between items-center">
+                <div class="flex items-center gap-2 select-none">
+                    <i class="ri-upload-cloud-line text-3xl text-violet-600"></i>
+                    <h1 class="text-2xl font-semibold tracking-tight">Cloud<span class="text-violet-600">Keep</span></h1>
                 </div>
 
                 <div class="space-x-2">
-                    <button onclick="logout()" class=" bg-gray-100 px-3 p-2 hover:cursor-pointer hover:bg-gray-200 rounded">
+                    <button onclick="logout()" class=" bg-gray-100 px-3 p-2 hover:cursor-pointer hover:bg-gray-200 rounded md:hidden">
                         <i class="ri-logout-circle-r-line"></i>
                     </button>
 
@@ -124,11 +125,11 @@
                  <div class="hidden md:block w-full overflow-x-auto">
                     <table class="w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
                         <thead>
-                            <tr class="bg-slate-900 text-slate-200 text-left">
-                                <th class="font-medium py-3 px-4">Filename</th>
-                                <th class="font-medium px-4">Email</th>
-                                <th class="font-medium px-4">Size</th>
-                                <th class="font-medium px-4">Datetime</th>
+                            <tr class="bg-gray-50 text-gray-500 text-left border-b border-gray-200">
+                                <th class="font-medium py-3 pl-6 text-xs uppercase tracking-wider">Filename</th>
+                                <th class="font-medium text-xs uppercase tracking-wider">Email</th>
+                                <th class="font-medium text-xs uppercase tracking-wider">Size</th>
+                                <th class="font-medium text-xs uppercase tracking-wider">Date & Time</th>
                             </tr>
                         </thead>
 
