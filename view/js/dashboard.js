@@ -16,7 +16,7 @@ const setGreeting = () => {
     const name = document.getElementById('userName')?.textContent || ''
     const greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
     const el = document.getElementById('greetingText')
-    if (el) el.textContent = name ? `${greet}, ${name.trim()}` : greet
+    if (el) el.textContent = name ? `${greet}, ${name.trim().split(' ').map((word) => word.charAt(0).toUpperCase()+word.slice(1).toLowerCase()).join(' ')}` : greet
 }
 
 const copyEmail = (btn, email) => {
@@ -57,7 +57,7 @@ const reportIconMap = (type) => ({
 }[type?.toLowerCase()] || { icon: 'ri-file-line', bg: 'bg-gray-50', text: 'text-gray-400' })
 
 const notFound = `
-    <div class="flex flex-col items-center justify-center py-20 px-6 w-full">
+    <div class="flex flex-col items-center justify-center py-20 px-6 w-full select-none">
         <div class="relative flex flex-col items-center justify-center w-full max-w-lg border-2 border-dashed border-slate-200 rounded-2xl py-16 px-8 bg-slate-50/50 hover:border-indigo-300 hover:bg-indigo-50/30 transition-all duration-300 group cursor-pointer">
             <div class="absolute -top-4 -left-4 w-14 h-16 bg-white border border-slate-100 rounded-xl shadow-md rotate-[-8deg] flex flex-col gap-1.5 p-2 opacity-70 group-hover:opacity-100 group-hover:rotate-[-10deg] transition-all duration-300">
                 <div class="w-full h-2 bg-indigo-100 rounded"></div>

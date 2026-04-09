@@ -12,12 +12,14 @@ const Toast = new Notyf({
 
 
 const uploadFile = async (e) => {
+    e.preventDefault()
+    const uploadButton = document.getElementById('upload-btn')
+    const fileInput = document.getElementById('file-input')
     try
     {
-        e.preventDefault()
         const form = e.target
         const progressbar = document.getElementById('progressbar')
-        const uploadButton = document.getElementById('upload-btn')
+        const progressLabel = document.getElementById('progressLabel')
         const formdata = new FormData(form)
 
         const file = formdata.get('myFile')
@@ -30,12 +32,9 @@ const uploadFile = async (e) => {
                 const loaded = e.loaded
                 const total = e.total
                 const percentageValue = Math.floor((loaded*100)/total)
-                progressbar.style.width = percentageValue+'%'
-                progressbar.innerHTML = percentageValue+'%'
-
-                // wherever you update progressbar width, also update the label
-                // document.getElementById('progressbar').style.width = progress + '%';
-                // document.getElementById('progressLabel').textContent = progress + '%';
+            
+                progressbar.style.width = percentageValue + '%';
+                progressLabel.textContent = percentageValue + '%';
             },
             headers: {
                 Authorization: `Bearer ${token}`
@@ -43,10 +42,13 @@ const uploadFile = async (e) => {
         }
 
         uploadButton.disabled = true
+        uploadButton.style.cursor = 'not-allowed'
+        fileInput.disabled = true
+        fileInput.style.cursor = 'not-allowed'
         await axios.post('/api/file', formdata, options)
         Toast.success(`File uploaded!`)
         progressbar.style.width = 0
-        progressbar.innerHTML = ''
+        progressLabel.textContent = '0%'
         form.reset()
         toggleDrawer()
         fetchFiles()
@@ -56,8 +58,10 @@ const uploadFile = async (e) => {
         Toast.error('Upload Failed')
     }
     finally{
-        const uploadButton = document.getElementById('upload-btn')
         uploadButton.disabled = false
+        uploadButton.style.cursor = 'default'
+        fileInput.disabled = false
+        fileInput.style.cursor = 'default'
     }
 }
 

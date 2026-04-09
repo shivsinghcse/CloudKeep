@@ -9,3 +9,6 @@ const copyAdminEmail = (btn) => {
         btn.innerHTML = `<i class="ri-file-copy-line text-xs"></i>`;
     }, 1500);
 }
+
+const copyRightYear = document.getElementById('year')
+copyRightYear.innerHTML = new Date().getFullYear()

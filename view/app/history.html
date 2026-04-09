@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CloudKeep | History</title>
-    <link rel="shortcut icon" href="../images/cloud.png" type="image/x-icon" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="../images/favicon/site.webmanifest">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link
         href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
@@ -23,14 +26,14 @@
     <script src="../js/preGaurd.js"></script>
 </head>
 <body>
-    <div class="bg-gray-100 h-screen">
-          <aside 
-            class="fixed top-18 md:top-0 left-0 h-full w-60 
-            bg-gradient-to-b from-[#1e1b4b] via-[#312e81] to-[#1e1b4b]
-            transform -translate-x-full z-50 space-y-6
-            shadow-2xl shadow-indigo-950/50 border-r border-indigo-800/30"
-            id="sidebar"
-            >
+    <div class="bg-gray-100 h-screen select-none">
+        <aside 
+        class="fixed top-18 md:top-0 left-0 h-full w-60 
+        bg-gradient-to-b from-[#1e1b4b] via-[#312e81] to-[#1e1b4b]
+        transform -translate-x-full z-50 space-y-6
+        shadow-2xl shadow-indigo-950/50 border-r border-indigo-800/30"
+        id="sidebar"
+        >
             <div class="hidden md:block h-[73px]"></div>
             <!-- Profile Section -->
             <div class="flex flex-col items-center mt-8 pb-6 mx-4 border-b border-indigo-700/30">
@@ -42,7 +45,7 @@
                 </div>
                 <h1 class="text-base font-semibold text-white capitalize mt-1" id="userName">Amelia Harper</h1>
                 <div class='flex gap-4'>
-                    <p class="text-xs text-indigo-300/80 mt-0.5" id="userEmail">amelia@harper.com</p>
+                    <p class="text-xs text-indigo-300/80 mt-0.5 select-none" id="userEmail">amelia@harper.com</p>
                     <button onclick="copyAdminEmail(this)" 
                         class="text-indigo-300 hover:text-white transition duration-200 hover:cursor-pointer ml-1">
                         <i class="ri-file-copy-line text-xs"></i>
@@ -53,7 +56,7 @@
             <!-- Nav Links -->
             <div class="px-4 flex flex-col gap-1.5">
 
-                <p class="text-[10px] font-semibold uppercase tracking-widest text-indigo-400/50 px-3 mb-1">Menu</p>
+                <p class="text-[10px] font-semibold uppercase tracking-widest text-indigo-400/50 px-3 mb-1 select-none">Menu</p>
 
                 <a href="dashboard">
                     <button class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl
@@ -94,7 +97,11 @@
                         <span class="text-sm font-medium">Logout</span>
                     </button>
                 </div>
+            </div>
 
+            <div class="fixed left-0 bottom-2 w-58 mx-auto px-2 flex justify-center items-center gap-2 select-none">
+                <img src="../images/cloud.png" alt="logo" class="w-4"/>
+                <p class="text-center text-xs font-normal text-gray-400">&copy; <span id="year" class="">2027</span> CloudKeep.</p>
             </div>
         </aside>
 
