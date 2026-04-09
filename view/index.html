@@ -1,191 +1,260 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloudKeep</title>
-    <link rel="shortcut icon" href="./images/cloud.png" type="image/x-icon" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link
-        href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
-        rel="stylesheet"
-    />
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
-</head>
-<body>
-    <div class="bg-gray-200 h-screen md:min-h-screen flex items-center justify-center animate__animated animate_fadeIn">
-        <div class="px-8 py-40 md:py-12 w-[100%] h-screen md:h-auto md:w-[420px] bg-white rounded-lg space-y-6 animate__animated animate__pulse">
-
-            <div class="flex justify-center items-center gap-2">
-                <i class="ri-upload-cloud-line text-5xl text-violet-600"></i>
-                <h1 class="text-3xl font-semibold">Cloud<span class="text-violet-600">Keep</span></h1>
-            </div>
-
-            <form class="flex flex-col gap-6" onsubmit="login(event)">
-
-                <div class="space-y-1">
-                    <label 
-                        for="email"
-                        class="text-[17px] text-gray-500 block"
-                    >
-                        Email
-                    </label>
-                    <input 
-                        type="email"
-                        name="email"
-                        id="email"
-                        class="border border-gray-300 rounded p-2 w-full"
-                        required
-                        placeholder="user@email.com"
-                    />
-                </div>
-
-                <div class="space-y-1">
-                    <label 
-                        for="password"
-                        class="text-[17px] text-gray-500 block"
-                    >
-                        Password
-                    </label>
-                    <div class="relative">
-                        <input 
-                            type="password"
-                            name="password"
-                            id="password"
-                            class="border border-gray-300 rounded p-2 w-full"
-                            required
-                            placeholder="********"
-                        />
-                        <button 
-                            onclick="togglePassword(this)"
-                            type="button" 
-                            class="absolute right-4 top-1  h-8 w-8 hover:bg-gray-200 hover:cursor-pointer rounded-full transition">
-                            <i class="ri-eye-line"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <button class="bg-violet-500 rounded p-2 w-full text-white font-medium hover:bg-violet-600">Sign in</button>
-
-            </form>
-
-            <div class="flex justify-center gap-2">
-                <p class="text-gray-500">Don't have an account ?</p>
-                <a href="signup" class="text-green-500 font-medium">Signup</a>
-            </div>
-        </div>
-    </div>
-    
-    <script src="./js/session.js"></script>
-    <script src="./js/login.js"></script>
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloudKeep</title>
+    <title>CloudKeep — Store, share and access your files from anywhere</title>
     <link rel="apple-touch-icon" sizes="180x180" href="../images/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon/favicon-16x16.png">
     <link rel="manifest" href="../images/favicon/site.webmanifest">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
-
-    <!-- ADD: Inter font for clean consistent typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        /* Clean focus ring on inputs */
-        input:focus { outline: none; border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
+        body { font-family: 'DM Sans', sans-serif; }
+        h1, h2, .serif { font-family: 'Instrument Serif', serif; }
+        html { scroll-behavior: smooth; }
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+        .reveal.visible { opacity: 1; transform: none; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .fade-1 { animation: fadeUp .6s ease both; }
+        .fade-2 { animation: fadeUp .6s .1s ease both; }
+        .fade-3 { animation: fadeUp .6s .2s ease both; }
+        .fade-4 { animation: fadeUp .6s .3s ease both; }
+        .fade-5 { animation: fadeUp .7s .4s ease both; }
     </style>
 </head>
-<body>
-    <!-- FIX: bg-gray-100 is softer than gray-200, animate__fadeIn on body instead -->
-    <div class="bg-gray-100 min-h-screen flex items-center justify-center animate__animated animate__fadeIn select-none">
-        
-        <div class="px-8 w-full h-screen md:h-auto md:w-[420px] bg-white md:rounded-xl md:border md:border-gray-200 md:shadow-xl">
-            <div class="flex flex-col justify-center h-full md:h-auto md:py-12 space-y-6">
-                <!-- FIX: smaller icon (text-3xl), tighter gap, slightly smaller heading -->
-                <div class="flex justify-center items-center gap-2 mb-2">
-                    <i class="ri-upload-cloud-line text-3xl text-violet-600"></i>
-                    <h1 class="text-2xl font-semibold tracking-tight">Cloud<span class="text-violet-600">Keep</span></h1>
+<body class="bg-[#fafaf9] text-[#0f0e17] overflow-x-hidden">
+
+<!-- NAV -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-12 py-[18px] bg-[rgba(250,250,249,0.85)] backdrop-blur-md border-b border-[#e8e6f0]">
+    <a href="/" class="flex items-center gap-2 no-underline">
+        <div class="w-8 h-8 bg-violet-800 rounded-lg flex items-center justify-center">
+            <i class="ri-upload-cloud-line text-white text-base"></i>
+        </div>
+        <span class="text-[17px] font-medium text-[#0f0e17] tracking-tight">Cloud<span class="text-violet-600">Keep</span></span>
+    </a>
+    <div class="flex items-center gap-3">
+        <a href="#features" class="hidden md:block px-[18px] py-2 rounded-lg text-sm font-medium text-[#4a4a5a] hover:text-[#0f0e17] hover:bg-violet-100 transition-all no-underline">Features</a>
+        <a href="#how-it-works" class="hidden md:block px-[18px] py-2 rounded-lg text-sm font-medium text-[#4a4a5a] hover:text-[#0f0e17] hover:bg-violet-100 transition-all no-underline">How it works</a>
+        <a href="/login" class="px-[18px] py-2 rounded-lg text-sm font-medium text-[#4a4a5a] hover:text-[#0f0e17] hover:bg-violet-100 transition-all no-underline">Sign in</a>
+        <a href="/signup" class="px-5 py-2 rounded-lg text-sm font-medium text-white bg-violet-800 hover:bg-violet-600 active:scale-[0.98] transition-all no-underline">Get started</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-[120px] pb-20 relative overflow-hidden">
+    <!-- bg glow -->
+    <div class="absolute inset-0 z-0" style="background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(124,58,237,0.08) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 80% 60%, rgba(91,33,182,0.05) 0%, transparent 60%);"></div>
+
+    <div class="relative z-10 flex flex-col items-center">
+        <!-- badge -->
+        <div class="fade-1 inline-flex items-center gap-1.5 bg-violet-100 text-violet-700 text-xs font-medium px-3 py-1.5 rounded-full border border-violet-200/60 mb-7">
+            <i class="ri-sparkling-line text-xs"></i>
+            Free cloud storage for everyone
+        </div>
+
+        <!-- headline -->
+        <h1 class="fade-2 serif text-[clamp(44px,7vw,80px)] font-normal leading-[1.1] tracking-[-1.5px] text-[#0f0e17] max-w-[820px] mb-6">
+            Store, share and access your files <em class="italic text-violet-600">from anywhere</em>
+        </h1>
+
+        <!-- sub -->
+        <p class="fade-3 text-lg font-light text-[#4a4a5a] max-w-[480px] mb-10 leading-[1.65]">
+            Upload your documents, images and videos. Access them on any device. Share with anyone via email — instantly.
+        </p>
+
+        <!-- cta -->
+        <div class="fade-4 flex items-center gap-3 flex-wrap justify-center">
+            <a href="/signup" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-[15px] font-medium text-white bg-violet-800 hover:bg-violet-600 hover:-translate-y-px active:scale-[0.98] transition-all no-underline">
+                <i class="ri-add-line"></i>
+                Get started free
+            </a>
+            <a href="/login" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-[15px] font-medium text-[#0f0e17] bg-white border border-[#e8e6f0] hover:border-violet-600 hover:text-violet-600 hover:-translate-y-px transition-all no-underline">
+                Sign in
+            </a>
+        </div>
+
+        <!-- mock UI -->
+        <div class="fade-5 mt-16 w-full max-width-[760px] max-w-[760px]">
+            <div class="bg-white border border-[#e8e6f0] rounded-2xl p-6 shadow-[0_4px_32px_rgba(91,33,182,0.08),0_1px_4px_rgba(0,0,0,0.04)]">
+                <!-- window dots -->
+                <div class="flex items-center gap-2 mb-5 pb-4 border-b border-[#e8e6f0]">
+                    <div class="w-2.5 h-2.5 rounded-full bg-[#ff5f57]"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-[#febc2e]"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-[#28c840]"></div>
+                    <span class="text-[13px] font-medium text-[#9090a0] ml-1">My Files</span>
                 </div>
-
-                <!-- ADD: small subtitle sets context immediately -->
-                <p class="text-center text-sm text-gray-400 -mt-4">Sign in to your account</p>
-
-                <form class="flex flex-col gap-5" onsubmit="login(event)">
-
-                    <div class="space-y-1.5">
-                        <!-- FIX: label is text-sm font-medium, not text-[17px] text-gray-500 -->
-                        <label for="email" class="text-sm font-medium text-gray-700 block">
-                            Email address
-                        </label>
-                        <input
-                            type="email"
-                            name="email"
-                            id="email"
-                            class="border border-gray-200 rounded-lg px-3 py-2.5 w-full text-sm text-gray-900 bg-gray-50 transition"
-                            required
-                            placeholder="you@example.com"
-                        />
-                    </div>
-
-                    <div class="space-y-1.5">
-                        <div class="flex items-center justify-between">
-                            <label for="password" class="text-sm font-medium text-gray-700 block">
-                                Password
-                            </label>
-                            <!-- ADD: forgot password link -->
-                            <a href="#" class="text-xs text-violet-500 hover:text-violet-700">Forgot password?</a>
+                <!-- file rows -->
+                <div class="flex flex-col gap-2.5">
+                    <div class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-[#fafaf9] border border-[#e8e6f0]">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-[7px] bg-red-50 flex items-center justify-center"><i class="ri-file-pdf-line text-red-400 text-sm"></i></div>
+                            <div>
+                                <div class="text-[13px] font-medium text-[#0f0e17]">Project proposal</div>
+                                <div class="text-[11px] text-[#9090a0]">2.4 MB · 2 Jan 2025</div>
+                            </div>
                         </div>
-                        <div class="relative">
-                            <input
-                                type="password"
-                                name="password"
-                                id="password"
-                                class="border border-gray-200 rounded-lg px-3 py-2.5 w-full text-sm text-gray-900 bg-gray-50 transition"
-                                required
-                                placeholder="••••••••"
-                            />
-                            <button
-                                onclick="togglePassword(this)"
-                                type="button"
-                                class="absolute right-3 top-1/2 -translate-y-1/2 h-7 w-7 flex items-center justify-center hover:bg-gray-100 rounded-full transition text-gray-400">
-                                <i class="ri-eye-line text-sm"></i>
-                            </button>
-                        </div>
+                        <span class="text-[10px] font-medium px-2 py-1 rounded-full bg-red-50 text-red-500">PDF</span>
                     </div>
-
-                    <!-- FIX: rounded-lg instead of rounded, consistent with inputs -->
-                    <button class="bg-violet-600 rounded-lg py-2.5 w-full text-white text-sm font-medium hover:bg-violet-700 active:scale-[0.99] transition mt-1">
-                        Sign in
-                    </button>
-                </form>
-
-                <!-- FIX: signup link is violet-600 to match brand, not green -->
-                <div class="flex justify-center gap-1.5">
-                    <p class="text-sm text-gray-400">Don't have an account?</p>
-                    <a href="signup" class="text-sm text-violet-600 font-medium hover:text-violet-700">Sign up</a>
+                    <div class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-[#fafaf9] border border-[#e8e6f0]">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-[7px] bg-blue-50 flex items-center justify-center"><i class="ri-image-line text-blue-400 text-sm"></i></div>
+                            <div>
+                                <div class="text-[13px] font-medium text-[#0f0e17]">Design mockup</div>
+                                <div class="text-[11px] text-[#9090a0]">840 KB · 5 Jan 2025</div>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-medium px-2 py-1 rounded-full bg-blue-50 text-blue-500">PNG</span>
+                    </div>
+                    <div class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-[#fafaf9] border border-[#e8e6f0]">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-[7px] bg-violet-50 flex items-center justify-center"><i class="ri-file-word-line text-violet-400 text-sm"></i></div>
+                            <div>
+                                <div class="text-[13px] font-medium text-[#0f0e17]">Meeting notes</div>
+                                <div class="text-[11px] text-[#9090a0]">120 KB · 8 Jan 2025</div>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-medium px-2 py-1 rounded-full bg-violet-50 text-violet-600">DOCX</span>
+                    </div>
                 </div>
             </div>
-        </div>          
+        </div>
     </div>
+</section>
 
-    <script src="./js/session.js"></script>
-    <script src="./js/login.js"></script>
+<!-- FEATURES -->
+<section class="py-24 px-6" id="features">
+    <div class="max-w-[1080px] mx-auto">
+        <div class="reveal">
+            <p class="text-xs font-medium text-violet-700 tracking-[1.5px] uppercase mb-3">Features</p>
+            <h2 class="serif text-[clamp(32px,4vw,48px)] font-normal leading-[1.15] tracking-[-0.8px] text-[#0f0e17] mb-4">
+                Everything you need to<br><em class="italic text-violet-600">manage your files</em>
+            </h2>
+            <p class="text-base font-light text-[#4a4a5a] max-w-[480px]">A complete toolkit for storing, sharing and tracking your files — no technical setup needed.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-14">
+            <div class="reveal bg-white border border-[#e8e6f0] rounded-2xl p-7 hover:border-violet-300 hover:-translate-y-0.5 transition-all">
+                <div class="w-11 h-11 rounded-xl bg-violet-100 flex items-center justify-center mb-5"><i class="ri-upload-cloud-2-line text-violet-700 text-xl"></i></div>
+                <div class="text-[15px] font-medium text-[#0f0e17] mb-2">Easy file upload</div>
+                <div class="text-sm font-light text-[#4a4a5a] leading-relaxed">Upload any file type — documents, images, videos and more. Fast and reliable every time.</div>
+            </div>
+            <div class="reveal bg-white border border-[#e8e6f0] rounded-2xl p-7 hover:border-violet-300 hover:-translate-y-0.5 transition-all">
+                <div class="w-11 h-11 rounded-xl bg-violet-100 flex items-center justify-center mb-5"><i class="ri-device-line text-violet-700 text-xl"></i></div>
+                <div class="text-[15px] font-medium text-[#0f0e17] mb-2">Access anywhere</div>
+                <div class="text-sm font-light text-[#4a4a5a] leading-relaxed">Log in from any device — phone, tablet or desktop. Your files follow you everywhere.</div>
+            </div>
+            <div class="reveal bg-white border border-[#e8e6f0] rounded-2xl p-7 hover:border-violet-300 hover:-translate-y-0.5 transition-all">
+                <div class="w-11 h-11 rounded-xl bg-violet-100 flex items-center justify-center mb-5"><i class="ri-mail-send-line text-violet-700 text-xl"></i></div>
+                <div class="text-[15px] font-medium text-[#0f0e17] mb-2">Share via email</div>
+                <div class="text-sm font-light text-[#4a4a5a] leading-relaxed">Send any file to anyone with just their email address. No account required on their end.</div>
+            </div>
+            <div class="reveal bg-white border border-[#e8e6f0] rounded-2xl p-7 hover:border-violet-300 hover:-translate-y-0.5 transition-all">
+                <div class="w-11 h-11 rounded-xl bg-violet-100 flex items-center justify-center mb-5"><i class="ri-file-history-line text-violet-700 text-xl"></i></div>
+                <div class="text-[15px] font-medium text-[#0f0e17] mb-2">Share history</div>
+                <div class="text-sm font-light text-[#4a4a5a] leading-relaxed">See every file you've shared, who you shared it with, and when. Full audit trail.</div>
+            </div>
+            <div class="reveal bg-white border border-[#e8e6f0] rounded-2xl p-7 hover:border-violet-300 hover:-translate-y-0.5 transition-all">
+                <div class="w-11 h-11 rounded-xl bg-violet-100 flex items-center justify-center mb-5"><i class="ri-download-2-line text-violet-700 text-xl"></i></div>
+                <div class="text-[15px] font-medium text-[#0f0e17] mb-2">Instant download</div>
+                <div class="text-sm font-light text-[#4a4a5a] leading-relaxed">Download any of your files instantly. Available whenever you need them.</div>
+            </div>
+            <div class="reveal bg-white border border-[#e8e6f0] rounded-2xl p-7 hover:border-violet-300 hover:-translate-y-0.5 transition-all">
+                <div class="w-11 h-11 rounded-xl bg-violet-100 flex items-center justify-center mb-5"><i class="ri-pie-chart-2-line text-violet-700 text-xl"></i></div>
+                <div class="text-[15px] font-medium text-[#0f0e17] mb-2">Storage dashboard</div>
+                <div class="text-sm font-light text-[#4a4a5a] leading-relaxed">See your storage breakdown by file type — images, videos, documents and more.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="py-24 px-6 bg-white border-t border-b border-[#e8e6f0]" id="how-it-works">
+    <div class="max-w-[1080px] mx-auto">
+        <div class="reveal">
+            <p class="text-xs font-medium text-violet-700 tracking-[1.5px] uppercase mb-3">How it works</p>
+            <h2 class="serif text-[clamp(32px,4vw,48px)] font-normal leading-[1.15] tracking-[-0.8px] text-[#0f0e17]">
+                Up and running in<br><em class="italic text-violet-600">three simple steps</em>
+            </h2>
+        </div>
+        <div class="reveal grid grid-cols-1 md:grid-cols-3 mt-14 border border-[#e8e6f0] rounded-2xl overflow-hidden">
+            <div class="p-8 border-b md:border-b-0 md:border-r border-[#e8e6f0]">
+                <div class="serif text-5xl font-normal text-violet-100 leading-none mb-4">01</div>
+                <div class="text-[15px] font-medium text-[#0f0e17] mb-2">Create an account</div>
+                <div class="text-[13px] font-light text-[#4a4a5a] leading-relaxed">Sign up with your name, email and password. Takes less than a minute.</div>
+            </div>
+            <div class="p-8 border-b md:border-b-0 md:border-r border-[#e8e6f0]">
+                <div class="serif text-5xl font-normal text-violet-100 leading-none mb-4">02</div>
+                <div class="text-[15px] font-medium text-[#0f0e17] mb-2">Upload your files</div>
+                <div class="text-[13px] font-light text-[#4a4a5a] leading-relaxed">Add any file from your device. Documents, images, videos — all supported.</div>
+            </div>
+            <div class="p-8">
+                <div class="serif text-5xl font-normal text-violet-100 leading-none mb-4">03</div>
+                <div class="text-[15px] font-medium text-[#0f0e17] mb-2">Access and share</div>
+                <div class="text-[13px] font-light text-[#4a4a5a] leading-relaxed">Open your files from any device or share them with anyone via email instantly.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-24 px-6 text-center bg-[#0f0e17]">
+    <div class="max-w-[1080px] mx-auto reveal">
+        <h2 class="serif text-[clamp(32px,4vw,48px)] font-normal leading-[1.15] tracking-[-0.8px] text-white mb-4">
+            Ready to get <em class="italic text-violet-400">started?</em>
+        </h2>
+        <p class="text-base font-light text-white/50 max-w-[400px] mx-auto mb-10">Join CloudKeep and take control of your files today. Free to use, no credit card needed.</p>
+        <a href="/signup" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl text-[15px] font-medium text-[#0f0e17] bg-white hover:bg-violet-100 hover:text-violet-700 hover:-translate-y-px transition-all no-underline">
+            <i class="ri-user-add-line"></i>
+            Create your free account
+        </a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-[#0f0e17] border-t border-white/10 px-12 py-6 flex items-center justify-between flex-wrap gap-3">
+    <a href="/" class="flex items-center gap-2 no-underline">
+        <div class="w-8 h-8 bg-violet-800 rounded-lg flex items-center justify-center">
+            <i class="ri-upload-cloud-line text-white text-base"></i>
+        </div>
+        <span class="text-[17px] font-medium text-white/60 tracking-tight">Cloud<span class="text-violet-400">Keep</span></span>
+    </a>
+    <p class="text-[13px] text-white/30">&copy; <span id="year">2025</span> CloudKeep. All rights reserved.</p>
+    <div class="flex gap-5">
+        <a href="/login" class="text-[13px] text-white/40 hover:text-white transition-colors no-underline">Sign in</a>
+        <a href="/signup" class="text-[13px] text-white/40 hover:text-white transition-colors no-underline">Sign up</a>
+    </div>
+</footer>
+
+<script>
+    const copyRightYear = document.getElementById('year')
+    copyRightYear.innerHTML = new Date().getFullYear()  
+
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                observer.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            e.preventDefault();
+            document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+</script>
+
 </body>
 </html>

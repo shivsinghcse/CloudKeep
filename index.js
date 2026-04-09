@@ -60,7 +60,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-    res.sendFile(getPth('index.html'), (err) => {
+    res.sendFile(getPth('login.html'), (err) => {
         if(err)
         {
             res.send('404 | Page not found')
@@ -122,6 +122,15 @@ app.get('/api/share', AuthMiddleware, fetchShared)
 
 
 // endpoint Not found
-app.use((req, res) => {
+app.use('/api/{*path}', (req, res) => {
     res.status(404).json({message: 'Endpoint not found !'})
+})
+
+app.get('/{*path}', (req, res) => {
+    res.sendFile(getPth('app/404.html'), (err) => {
+        if(err)
+        {
+            res.send('404 | Page not found')
+        }
+    })
 })

@@ -16,11 +16,12 @@ const Toast = new Notyf({
 })
 
 const signup = async (e) => {
+    e.preventDefault()
+    const form = e.target
+    const btn = e.target.querySelector('button[type="submit"]')
+    setLoading(btn, true)
     try
     {
-        e.preventDefault()
-        const form = e.target
-
         const payload = {
             fullname: form.fullname.value,
             email: form.email.value,
@@ -29,16 +30,16 @@ const signup = async (e) => {
         }
 
         const response = await axios.post('/api/signup', payload)
-        form.reset()
-        Toast.success(`${response.data.message} - Please wait while we are redirecting you...`)
-
-        setTimeout(()=>{
-            location.href = '/login'
-        }, 2000)
         
+        location.href = '/login'
     }
     catch(err){
         Toast.error(err.response ? err.response.data.message : err.message)
+    }
+    finally
+    {
+        setLoading(btn, false)
+        form.reset()
     }
 }
 

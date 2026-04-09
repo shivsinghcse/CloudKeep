@@ -12,3 +12,4 @@ const copyAdminEmail = (btn) => {
 
 const copyRightYear = document.getElementById('year')
 copyRightYear.innerHTML = new Date().getFullYear()
+
