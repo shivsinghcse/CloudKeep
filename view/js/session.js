@@ -25,5 +25,5 @@ const getSession = async () => {
 
 const logout = () => {
     localStorage.clear()
-    location.href = '/login'
+    location.href = '/'
 }
