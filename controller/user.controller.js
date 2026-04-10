@@ -29,7 +29,7 @@ const login = async (req, res) => {
         
         if(!isLogin)
         {
-            return res.status(401).json({message: 'incorrect password'})
+            return res.status(401).json({message: 'Invalid credentials email or password incorrect'})
         }
 
         const payload = {

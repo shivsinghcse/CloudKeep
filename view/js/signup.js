@@ -8,7 +8,7 @@ session
     }
 })
 .catch((err) => {
-    console.log(err);
+    console.error(err);
 })
 
 const Toast = new Notyf({
@@ -29,7 +29,7 @@ const signup = async (e) => {
             password: form.password.value
         }
 
-        const response = await axios.post('/api/signup', payload)
+        await axios.post('/api/signup', payload)
         
         location.href = '/login'
     }
@@ -40,17 +40,5 @@ const signup = async (e) => {
     {
         setLoading(btn, false)
         form.reset()
-    }
-}
-
-const passwordEle = document.querySelector('#password')
-
-const togglePassword = (btn) => {
-    if(passwordEle.type === 'password'){
-        passwordEle.type = 'text'
-        btn.innerHTML = `<i class="ri-eye-off-line"></i>`
-    } else {
-        passwordEle.type = 'password'
-        btn.innerHTML = `<i class="ri-eye-line"></i>`
     }
 }

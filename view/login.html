@@ -1,98 +1,9 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloudKeep</title>
-    <link rel="shortcut icon" href="./images/cloud.png" type="image/x-icon" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link
-        href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
-        rel="stylesheet"
-    />
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
-</head>
-<body>
-    <div class="bg-gray-200 h-screen md:min-h-screen flex items-center justify-center animate__animated animate_fadeIn">
-        <div class="px-8 py-40 md:py-12 w-[100%] h-screen md:h-auto md:w-[420px] bg-white rounded-lg space-y-6 animate__animated animate__pulse">
-
-            <div class="flex justify-center items-center gap-2">
-                <i class="ri-upload-cloud-line text-5xl text-violet-600"></i>
-                <h1 class="text-3xl font-semibold">Cloud<span class="text-violet-600">Keep</span></h1>
-            </div>
-
-            <form class="flex flex-col gap-6" onsubmit="login(event)">
-
-                <div class="space-y-1">
-                    <label 
-                        for="email"
-                        class="text-[17px] text-gray-500 block"
-                    >
-                        Email
-                    </label>
-                    <input 
-                        type="email"
-                        name="email"
-                        id="email"
-                        class="border border-gray-300 rounded p-2 w-full"
-                        required
-                        placeholder="user@email.com"
-                    />
-                </div>
-
-                <div class="space-y-1">
-                    <label 
-                        for="password"
-                        class="text-[17px] text-gray-500 block"
-                    >
-                        Password
-                    </label>
-                    <div class="relative">
-                        <input 
-                            type="password"
-                            name="password"
-                            id="password"
-                            class="border border-gray-300 rounded p-2 w-full"
-                            required
-                            placeholder="********"
-                        />
-                        <button 
-                            onclick="togglePassword(this)"
-                            type="button" 
-                            class="absolute right-4 top-1  h-8 w-8 hover:bg-gray-200 hover:cursor-pointer rounded-full transition">
-                            <i class="ri-eye-line"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <button class="bg-violet-500 rounded p-2 w-full text-white font-medium hover:bg-violet-600">Sign in</button>
-
-            </form>
-
-            <div class="flex justify-center gap-2">
-                <p class="text-gray-500">Don't have an account ?</p>
-                <a href="signup" class="text-green-500 font-medium">Signup</a>
-            </div>
-        </div>
-    </div>
-    
-    <script src="./js/session.js"></script>
-    <script src="./js/login.js"></script>
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloudKeep</title>
+    <title>CloudKeep | Sign in</title>
     <link rel="apple-touch-icon" sizes="180x180" href="../images/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon/favicon-16x16.png">
@@ -104,7 +15,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
-    <!-- ADD: Inter font for clean consistent typography -->
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -113,24 +24,22 @@
     </style>
 </head>
 <body>
-    <!-- FIX: bg-gray-100 is softer than gray-200, animate__fadeIn on body instead -->
+    
     <div class="bg-gray-100 min-h-screen flex items-center justify-center animate__animated animate__fadeIn select-none">
         
         <div class="px-8 w-full h-screen md:h-auto md:w-[420px] bg-white md:rounded-xl md:border md:border-gray-200 md:shadow-xl">
             <div class="flex flex-col justify-center h-full md:h-auto md:py-12 space-y-6">
-                <!-- FIX: smaller icon (text-3xl), tighter gap, slightly smaller heading -->
+                
                 <div class="flex justify-center items-center gap-2 mb-2">
                     <i class="ri-upload-cloud-line text-3xl text-violet-600"></i>
                     <h1 class="text-2xl font-semibold tracking-tight">Cloud<span class="text-violet-600">Keep</span></h1>
                 </div>
 
-                <!-- ADD: small subtitle sets context immediately -->
                 <p class="text-center text-sm text-gray-400 -mt-4">Sign in to your account</p>
 
                 <form class="flex flex-col gap-5" onsubmit="login(event)">
 
                     <div class="space-y-1.5">
-                        <!-- FIX: label is text-sm font-medium, not text-[17px] text-gray-500 -->
                         <label for="email" class="text-sm font-medium text-gray-700 block">
                             Email address
                         </label>
@@ -149,7 +58,6 @@
                             <label for="password" class="text-sm font-medium text-gray-700 block">
                                 Password
                             </label>
-                            <!-- ADD: forgot password link -->
                             <a href="#" class="text-xs text-violet-500 hover:text-violet-700">Forgot password?</a>
                         </div>
                         <div class="relative">
@@ -170,13 +78,11 @@
                         </div>
                     </div>
 
-                    <!-- FIX: rounded-lg instead of rounded, consistent with inputs -->
                     <button type="submit" class="bg-violet-600 rounded-lg py-2.5 w-full text-white text-sm font-medium hover:bg-violet-700 active:scale-[0.99] transition mt-1">
                         Sign in
                     </button>
                 </form>
 
-                <!-- FIX: signup link is violet-600 to match brand, not green -->
                 <div class="flex justify-center gap-1.5">
                     <p class="text-sm text-gray-400">Don't have an account?</p>
                     <a href="signup" class="text-sm text-violet-600 font-medium hover:text-violet-700">Sign up</a>
@@ -187,6 +93,7 @@
 
     <script src="./js/session.js"></script>
     <script src="./js/loader.js"></script>
+    <script src="./js/togglePassword.js"></script>
     <script src="./js/login.js"></script>
 </body>
 </html>
