@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloudKeep — Store, share and access your files from anywhere</title>
+    <title>CloudKeep | Store, share and access your files from anywhere</title>
     <link rel="apple-touch-icon" sizes="180x180" href="../images/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon/favicon-16x16.png">
@@ -14,7 +14,7 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
     <style>
         body { font-family: 'DM Sans', sans-serif; }
-        h1, h2, .serif { font-family: 'Instrument Serif', serif; }
+        h1, h2, .serif { font-family: serif; }
         html { scroll-behavior: smooth; }
         .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
         .reveal.visible { opacity: 1; transform: none; }
@@ -32,7 +32,7 @@
 <body class="bg-[#fafaf9] text-[#0f0e17] overflow-x-hidden">
 
 <!-- NAV -->
-<nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-12 py-[18px] bg-[rgba(250,250,249,0.85)] backdrop-blur-md border-b border-[#e8e6f0]">
+<nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-12 py-[18px] bg-[rgba(250,250,249,0.85)] backdrop-blur-md border-b border-[#e8e6f0] select-none">
     <a href="/" class="flex items-center gap-2 no-underline">
         <div class="w-8 h-8 bg-violet-800 rounded-lg flex items-center justify-center">
             <i class="ri-upload-cloud-line text-white text-base"></i>
@@ -42,7 +42,7 @@
     <div class="flex items-center gap-3">
         <a href="#features" class="hidden md:block px-[18px] py-2 rounded-lg text-sm font-medium text-[#4a4a5a] hover:text-[#0f0e17] hover:bg-violet-100 transition-all no-underline">Features</a>
         <a href="#how-it-works" class="hidden md:block px-[18px] py-2 rounded-lg text-sm font-medium text-[#4a4a5a] hover:text-[#0f0e17] hover:bg-violet-100 transition-all no-underline">How it works</a>
-        <a href="/login" class="px-[18px] py-2 rounded-lg text-sm font-medium text-[#4a4a5a] hover:text-[#0f0e17] hover:bg-violet-100 transition-all no-underline">Sign in</a>
+        <a href="/login" class="hidden md:block px-[18px] py-2 rounded-lg text-sm font-medium text-[#4a4a5a] hover:text-[#0f0e17] hover:bg-violet-100 transition-all no-underline">Sign in</a>
         <a href="/signup" class="px-5 py-2 rounded-lg text-sm font-medium text-white bg-violet-800 hover:bg-violet-600 active:scale-[0.98] transition-all no-underline">Get started</a>
     </div>
 </nav>
@@ -52,9 +52,9 @@
     <!-- bg glow -->
     <div class="absolute inset-0 z-0" style="background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(124,58,237,0.08) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 80% 60%, rgba(91,33,182,0.05) 0%, transparent 60%);"></div>
 
-    <div class="relative z-10 flex flex-col items-center">
+    <div class="relative z-10 flex flex-col items-center ">
         <!-- badge -->
-        <div class="fade-1 inline-flex items-center gap-1.5 bg-violet-100 text-violet-700 text-xs font-medium px-3 py-1.5 rounded-full border border-violet-200/60 mb-7">
+        <div class="fade-1 inline-flex items-center gap-1.5 bg-violet-100 text-violet-700 text-xs font-medium px-3 py-1.5 rounded-full border border-violet-200/60 mb-7 select-none">
             <i class="ri-sparkling-line text-xs"></i>
             Free cloud storage for everyone
         </div>
@@ -70,7 +70,7 @@
         </p>
 
         <!-- cta -->
-        <div class="fade-4 flex items-center gap-3 flex-wrap justify-center">
+        <div class="fade-4 flex items-center gap-3 flex-wrap justify-center select-none">
             <a href="/signup" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-[15px] font-medium text-white bg-violet-800 hover:bg-violet-600 hover:-translate-y-px active:scale-[0.98] transition-all no-underline">
                 <i class="ri-add-line"></i>
                 Get started free
@@ -81,7 +81,7 @@
         </div>
 
         <!-- mock UI -->
-        <div class="fade-5 mt-16 w-full max-width-[760px] max-w-[760px]">
+        <div class="fade-5 mt-16 w-full max-width-[760px] max-w-[760px] select-none">
             <div class="bg-white border border-[#e8e6f0] rounded-2xl p-6 shadow-[0_4px_32px_rgba(91,33,182,0.08),0_1px_4px_rgba(0,0,0,0.04)]">
                 <!-- window dots -->
                 <div class="flex items-center gap-2 mb-5 pb-4 border-b border-[#e8e6f0]">
@@ -129,7 +129,7 @@
 </section>
 
 <!-- FEATURES -->
-<section class="py-24 px-6" id="features">
+<section class="py-24 px-6 select-none" id="features">
     <div class="max-w-[1080px] mx-auto">
         <div class="reveal">
             <p class="text-xs font-medium text-violet-700 tracking-[1.5px] uppercase mb-3">Features</p>
@@ -175,7 +175,7 @@
 </section>
 
 <!-- HOW IT WORKS -->
-<section class="py-24 px-6 bg-white border-t border-b border-[#e8e6f0]" id="how-it-works">
+<section class="py-24 px-6 bg-white border-t border-b border-[#e8e6f0] select-none" id="how-it-works">
     <div class="max-w-[1080px] mx-auto">
         <div class="reveal">
             <p class="text-xs font-medium text-violet-700 tracking-[1.5px] uppercase mb-3">How it works</p>
@@ -185,17 +185,17 @@
         </div>
         <div class="reveal grid grid-cols-1 md:grid-cols-3 mt-14 border border-[#e8e6f0] rounded-2xl overflow-hidden">
             <div class="p-8 border-b md:border-b-0 md:border-r border-[#e8e6f0]">
-                <div class="serif text-5xl font-normal text-violet-100 leading-none mb-4">01</div>
+                <div class="serif text-5xl font-normal text-violet-200 leading-none mb-4">01</div>
                 <div class="text-[15px] font-medium text-[#0f0e17] mb-2">Create an account</div>
                 <div class="text-[13px] font-light text-[#4a4a5a] leading-relaxed">Sign up with your name, email and password. Takes less than a minute.</div>
             </div>
             <div class="p-8 border-b md:border-b-0 md:border-r border-[#e8e6f0]">
-                <div class="serif text-5xl font-normal text-violet-100 leading-none mb-4">02</div>
+                <div class="serif text-5xl font-normal text-violet-200 leading-none mb-4">02</div>
                 <div class="text-[15px] font-medium text-[#0f0e17] mb-2">Upload your files</div>
                 <div class="text-[13px] font-light text-[#4a4a5a] leading-relaxed">Add any file from your device. Documents, images, videos — all supported.</div>
             </div>
             <div class="p-8">
-                <div class="serif text-5xl font-normal text-violet-100 leading-none mb-4">03</div>
+                <div class="serif text-5xl font-normal text-violet-200 leading-none mb-4">03</div>
                 <div class="text-[15px] font-medium text-[#0f0e17] mb-2">Access and share</div>
                 <div class="text-[13px] font-light text-[#4a4a5a] leading-relaxed">Open your files from any device or share them with anyone via email instantly.</div>
             </div>
@@ -204,7 +204,7 @@
 </section>
 
 <!-- CTA -->
-<section class="py-24 px-6 text-center bg-[#0f0e17]">
+<section class="py-24 px-6 text-center bg-[#0f0e17] select-none">
     <div class="max-w-[1080px] mx-auto reveal">
         <h2 class="serif text-[clamp(32px,4vw,48px)] font-normal leading-[1.15] tracking-[-0.8px] text-white mb-4">
             Ready to get <em class="italic text-violet-400">started?</em>
@@ -219,16 +219,23 @@
 
 <!-- FOOTER -->
 <footer class="bg-[#0f0e17] border-t border-white/10 px-12 py-6 flex items-center justify-between flex-wrap gap-3">
-    <a href="/" class="flex items-center gap-2 no-underline">
+    <a href="/" class="flex items-center gap-2 no-underline select-none order-1 md:order-0">
         <div class="w-8 h-8 bg-violet-800 rounded-lg flex items-center justify-center">
             <i class="ri-upload-cloud-line text-white text-base"></i>
         </div>
         <span class="text-[17px] font-medium text-white/60 tracking-tight">Cloud<span class="text-violet-400">Keep</span></span>
     </a>
-    <p class="text-[13px] text-white/30">&copy; <span id="year">2025</span> CloudKeep. All rights reserved.</p>
-    <div class="flex gap-5">
-        <a href="/login" class="text-[13px] text-white/40 hover:text-white transition-colors no-underline">Sign in</a>
-        <a href="/signup" class="text-[13px] text-white/40 hover:text-white transition-colors no-underline">Sign up</a>
+    <p class="text-[13px] text-white/30 select-none order-3 md:order-0">&copy; <span id="year">2025</span> CloudKeep. All rights reserved.</p>
+    <div class="flex flex-col gap-2 order-1 select-none order-1 md:order-0">
+        <h1 class="text-white/40 text-sm  hidden md:flex">Reach to us</h1>
+        <a 
+            href="mailto:info.cloudkeep@gmail.com?subject=Support Request" 
+            class="flex items-center gap-2 cursor-pointer">
+            <i class="ri-mail-line text-white/40 text-sm"></i>
+            <span class="text-white/40 text-sm hover:text-white/80 transition-colors">
+                info.cloudkeep@gmail.com
+            </span>
+        </a>
     </div>
 </footer>
 
