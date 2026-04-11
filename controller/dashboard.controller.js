@@ -31,12 +31,12 @@ const fetchDashboard = async (req, res) => {
                         $switch: {
                             branches: [
                                 { case: { $in: ['$type', ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp']] }, then: 'Images' },
-                                { case: { $in: ['$type', ['mp4', 'mkv', 'mov', 'avi', 'webm']] },         then: 'Videos' },
-                                { case: { $in: ['$type', ['mp3', 'wav', 'aac', 'flac']] },                then: 'Audio' },
+                                { case: { $in: ['$type', ['mp4', 'mkv', 'mov', 'avi', 'webm']] }, then: 'Videos' },
+                                { case: { $in: ['$type', ['mp3', 'wav', 'aac', 'flac']] }, then: 'Audio' },
                                 { case: { $in: ['$type', ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'csv']] }, then: 'Documents' },
-                                { case: { $in: ['$type', ['zip', 'rar', '7z', 'tar', 'gz']] },            then: 'Archives' },
-                                { case: { $in: ['$type', ['js', 'ts', 'html', 'css', 'json', 'py', 'java', 'cpp', 'c', 'xml', 'jsx', 'tsx']] }, then: 'Code' },
-                                { case: { $in: ['$type', ['exe', 'msi', 'dmg', 'apk']] },                then: 'Executables' },
+                                { case: { $in: ['$type', ['zip', 'rar', '7z', 'tar', 'gz']] }, then: 'Archives' },
+                                { case: { $in: ['$type', ['js', 'ts', 'html', 'css', 'json', 'py', 'java', 'cpp', 'c', 'xml', 'jsx', 'tsx', 'php', 'sql']] }, then: 'Code' },
+                                { case: { $in: ['$type', ['exe', 'msi', 'dmg', 'apk']] }, then: 'Executables' },
                             ],
                             default: 'Others'
                         }
