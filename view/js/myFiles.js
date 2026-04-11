@@ -169,9 +169,11 @@ const fetchFiles = async () => {
         'json': 'ri-braces-line text-gray-500',
         'xml':  'ri-code-line text-gray-500',
         'py':   'ri-code-line text-blue-400',
-        'java': 'ri-code-line text-red-400',
+        'java': 'ri-java-fill text-red-400',
         'cpp':  'ri-code-line text-blue-600',
         'c':    'ri-code-line text-blue-600',
+        'php':  'ri-php-line text-blue-600',
+        'sql':    'ri-database-2-line text-blue-600',
 
         // executables — show a warning color since these can be dangerous
         'exe':  'ri-terminal-box-line text-red-500',
