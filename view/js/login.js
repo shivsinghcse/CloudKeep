@@ -1,3 +1,4 @@
+axios.defaults.baseURL = SERVER
 const session = getSession()
 
 session

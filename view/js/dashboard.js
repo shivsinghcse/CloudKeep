@@ -10,7 +10,7 @@ const Toast = new Notyf({
     duration: 2000
 })
 
-// greeting based on time of day
+
 const setGreeting = () => {
     const hour = new Date().getHours()
     const name = document.getElementById('userName')?.textContent || ''
@@ -28,33 +28,82 @@ const copyEmail = (btn, email) => {
 }
 
 const fileIconMap = (type) => ({
-    'pdf':  'ri-file-pdf-line text-rose-400',
-    'jpg':  'ri-image-line text-blue-400',
-    'jpeg': 'ri-image-line text-blue-400',
-    'png':  'ri-image-line text-blue-400',
-    'mp4':  'ri-video-line text-purple-400',
-    'mp3':  'ri-music-line text-green-400',
-    'doc':  'ri-file-word-line text-blue-500',
-    'docx': 'ri-file-word-line text-blue-500',
-    'zip':  'ri-file-zip-line text-amber-400',
-}[type?.toLowerCase()] || 'ri-file-line text-gray-400')
+        // images
+        'jpg':  'ri-image-line text-blue-400',
+        'jpeg': 'ri-image-line text-blue-400',
+        'png':  'ri-image-line text-blue-400',
+        'gif':  'ri-image-line text-blue-400',
+        'svg':  'ri-image-line text-blue-400',
+        'webp': 'ri-image-line text-blue-400',
+
+        // documents
+        'pdf':  'ri-file-pdf-line text-rose-400',
+        'doc':  'ri-file-word-line text-blue-500',
+        'docx': 'ri-file-word-line text-blue-500',
+        'xls':  'ri-file-excel-line text-green-600',
+        'xlsx': 'ri-file-excel-line text-green-600',
+        'ppt':  'ri-file-ppt-line text-orange-500',
+        'pptx': 'ri-file-ppt-line text-orange-500',
+        'txt':  'ri-file-text-line text-gray-400',
+        'csv':  'ri-file-chart-line text-green-500',
+
+        // video
+        'mp4':  'ri-video-line text-purple-400',
+        'mkv':  'ri-video-line text-purple-400',
+        'mov':  'ri-video-line text-purple-400',
+        'avi':  'ri-video-line text-purple-400',
+        'webm': 'ri-video-line text-purple-400',
+
+        // audio
+        'mp3':  'ri-music-line text-green-400',
+        'wav':  'ri-music-line text-green-400',
+        'aac':  'ri-music-line text-green-400',
+        'flac': 'ri-music-line text-green-400',
+
+        // archives
+        'zip':  'ri-file-zip-line text-amber-400',
+        'rar':  'ri-file-zip-line text-amber-400',
+        '7z':   'ri-file-zip-line text-amber-400',
+        'tar':  'ri-file-zip-line text-amber-400',
+        'gz':   'ri-file-zip-line text-amber-400',
+
+        // code
+        'js':   'ri-javascript-line text-yellow-400',
+        'ts':   'ri-code-line text-blue-400',
+        'html': 'ri-html5-line text-orange-400',
+        'css':  'ri-css3-line text-blue-400',
+        'json': 'ri-braces-line text-gray-500',
+        'xml':  'ri-code-line text-gray-500',
+        'py':   'ri-code-line text-blue-400',
+        'java': 'ri-code-line text-red-400',
+        'cpp':  'ri-code-line text-blue-600',
+        'c':    'ri-code-line text-blue-600',
+
+        // executables — show a warning color since these can be dangerous
+        'exe':  'ri-terminal-box-line text-red-500',
+        'msi':  'ri-terminal-box-line text-red-500',
+        'dmg':  'ri-terminal-box-line text-red-500',
+        'apk':  'ri-android-line text-green-500',
+
+        // misc
+        'iso':  'ri-disc-line text-gray-500',
+        'torrent': 'ri-download-line text-gray-400',
+    }[type?.toLowerCase()] || 'ri-file-line text-gray-400')
 
 const formatSize = (bytes) => bytes < 1024 * 1024
     ? (bytes / 1024).toFixed(1) + ' KB'
     : (bytes / (1024 * 1024)).toFixed(1) + ' MB'
 
-// report type icons
 const reportIconMap = (type) => ({
-    'pdf':   { icon: 'ri-file-pdf-line',  bg: 'bg-rose-50',   text: 'text-rose-400'   },
-    'jpg':   { icon: 'ri-image-line',     bg: 'bg-blue-50',   text: 'text-blue-400'   },
-    'jpeg':  { icon: 'ri-image-line',     bg: 'bg-blue-50',   text: 'text-blue-400'   },
-    'png':   { icon: 'ri-image-line',     bg: 'bg-blue-50',   text: 'text-blue-400'   },
-    'mp4':   { icon: 'ri-video-line',     bg: 'bg-purple-50', text: 'text-purple-400' },
-    'mp3':   { icon: 'ri-music-line',     bg: 'bg-green-50',  text: 'text-green-400'  },
-    'doc':   { icon: 'ri-file-word-line', bg: 'bg-blue-50',   text: 'text-blue-500'   },
-    'docx':  { icon: 'ri-file-word-line', bg: 'bg-blue-50',   text: 'text-blue-500'   },
-    'zip':   { icon: 'ri-file-zip-line',  bg: 'bg-amber-50',  text: 'text-amber-400'  },
-}[type?.toLowerCase()] || { icon: 'ri-file-line', bg: 'bg-gray-50', text: 'text-gray-400' })
+    'Images':      { icon: 'ri-image-line',        bg: 'bg-blue-50',   text: 'text-blue-400'   },
+    'Videos':      { icon: 'ri-video-line',        bg: 'bg-purple-50', text: 'text-purple-400' },
+    'Audio':       { icon: 'ri-music-line',        bg: 'bg-green-50',  text: 'text-green-400'  },
+    'Documents':   { icon: 'ri-file-text-line',    bg: 'bg-rose-50',   text: 'text-rose-400'   },
+    'Archives':    { icon: 'ri-file-zip-line',     bg: 'bg-amber-50',  text: 'text-amber-400'  },
+    'Code':        { icon: 'ri-code-line',         bg: 'bg-yellow-50', text: 'text-yellow-500' },
+    'Executables': { icon: 'ri-terminal-box-line', bg: 'bg-red-50',    text: 'text-red-500'    },
+    'Others':      { icon: 'ri-file-line',         bg: 'bg-gray-50',   text: 'text-gray-400'   },
+}[type] || { icon: 'ri-file-line', bg: 'bg-gray-50', text: 'text-gray-400' })
 
 const notFound = `
     <div class="flex flex-col items-center justify-center py-20 px-6 w-full select-none">
@@ -140,9 +189,9 @@ const fetchRecentShared = async () => {
         recentSharedBox.innerHTML = data.map(item => `
             <div class="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0">
                 <div class="flex items-center gap-2.5 min-w-0">
-                    <i class="${fileIconMap(item.file.type)} text-base flex-shrink-0"></i>
+                    <i class="${fileIconMap(item.type)} text-base flex-shrink-0"></i>
                     <div class="min-w-0">
-                        <p class="text-sm font-medium text-gray-700 capitalize truncate">${item.file.filename}</p>
+                        <p class="text-sm font-medium text-gray-700 capitalize truncate">${item.filename}</p>
                         <p class="text-xs text-gray-400 truncate">${item.receiverEmail}</p>
                     </div>
                 </div>
@@ -165,7 +214,7 @@ const fetchFilesReport = async () => {
     try {
         const options = { headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` } }
         const { data } = await axios.get('/api/dashboard', options)
-
+         
         fileReportBox.innerHTML = data.map(item => {
             const { icon, bg, text } = reportIconMap(item._id)
             return `

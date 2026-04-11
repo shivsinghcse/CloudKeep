@@ -49,12 +49,21 @@ const deleteFile = async (req, res) => {
     try
     {
         const { id } = req.params 
+        const force = req.query.force === 'true'
 
         const file = await FileModel.findById(id)
+
         if(!file)
-            {
-                return res.status(404).json({message: 'file does not exist'})
-            }
+        {
+            return res.status(404).json({message: 'file does not exist'})
+        }
+        
+        if (file.isShared && !force) {
+            return res.status(200).json({
+                message: 'This file has been shared',
+                isShared: true
+            })
+        }
         
         const result = await cloudinary.uploader.destroy(file.public_id, {
             resource_type: file.resource_type ||  "image"

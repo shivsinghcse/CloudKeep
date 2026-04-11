@@ -1,16 +1,7 @@
+const FileModel = require('../model/file.model')
 const ShareModel = require('../model/share.model')
-const nodemailer = require('nodemailer')
 const { Resend } = require('resend')
 const resend = new Resend(process.env.RESEND_API_KEY)
-
-
-// const conn = nodemailer.createTransport({
-//     service: 'gmail',
-//     auth: {
-//         user: process.env.SMTP_EMAIL,
-//         pass: process.env.SMTP_PASSWORD
-//     }
-// })
 
 const getEmailTemplate = (link, filename, ext, size) => {
     return `<!DOCTYPE html>
@@ -101,60 +92,56 @@ const getEmailTemplate = (link, filename, ext, size) => {
         </html>`
 }
 
-// const shareFile = async (req, res) => {
-//     try
-//     {
-//         const {email, fileId, ext, filename, size} =req.body
-//         const link = `${process.env.SERVER}/api/file/download/${fileId}`
-        
-//         const options = {
-//             from: process.env.SMTP_EMAIL,
-//             to: email,
-//             subject: '☁️ CloudKeep: Just sent you a file',
-//             html: getEmailTemplate(link, filename, ext,  size)
-//         }
-
-//         await conn.sendMail(options)
-//         res.status(200).json({message: 'Email sent'})
-//     }
-//     catch(err)
-//     {
-//         console.error('Full error:', err)
-//         console.error('Full error2:', err.message)
-//         res.status(500).json({message: err.response ? err.response.data.message : err.message})
-//     }
-// }
 
 const shareFile = async (req, res) => {
     try {
         const { email, fileId, ext, filename, size } = req.body
-        const link = `${process.env.SERVER}/api/file/download/${fileId}`
-        
+
         if(!email || !fileId || !ext || !filename || !size)
         {
-            return res.status(200).json({ message: 'Invalid Information' })
+            return res.status(400).json({ message: 'Invalid Information' })
+        }
+
+        const link = `${process.env.SERVER}/api/file/download/${fileId}`
+        let status = 'sent'
+
+        try
+        {
+            resend.emails.send({
+                from: `CloudKeep <${process.env.RESEND_FROM}>`,
+                to: email,
+                subject: '☁️ CloudKeep: Just sent you a file',
+                html: getEmailTemplate(link, filename, ext, size)
+            })
+        }
+        catch(emailErr)
+        {
+            status = 'failed'
         }
 
         const payload = {
             user: req.user.id,
             receiverEmail: email,
             file: fileId, 
+            filename,
+            type: ext,
+            size,
+            status
         }
 
         await Promise.all([
-            resend.emails.send({
-                from: `CloudKeep <${process.env.RESEND_FROM}>`,
-                to: email,
-                subject: '☁️ CloudKeep: Just sent you a file',
-                html: getEmailTemplate(link, filename, ext, size)
-            }),
-            ShareModel.create(payload)
+            ShareModel.create(payload),
+            FileModel.findByIdAndUpdate(fileId, {isShared: true})
         ])
+
+        if(status === 'failed')
+        {
+            return res.status(500).json({ message: 'Failed to send email' })
+        }
 
         res.status(200).json({ message: 'Email sent' })
     }
     catch (err) {
-        console.error('Full error:', err)
         res.status(500).json({ message: err.message })
     }
 }
@@ -164,9 +151,8 @@ const fetchShared = async (req, res) => {
     {
         const {limit} = req.query
         const history = await ShareModel.find({user: req.user.id})
-        .populate('file', 'filename size type')
         .sort({createdAt: -1})
-        .limit(limit)
+        .limit(limit || 5)
         res.status(200).json(history)
     }
     catch(err)

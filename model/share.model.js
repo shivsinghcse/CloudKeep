@@ -14,6 +14,23 @@ const shareSchema = new Schema({
         type: mongoose.Types.ObjectId,
         ref: 'File',
         required: true
+    },
+    filename: {
+        type: String,
+        required: true,
+    },
+    type:{
+        type: String,
+        required: true,
+    },
+    size: {
+        type: Number,
+        required: true
+    },
+    status: {
+        type: String,
+        enum: ['sent', 'delivered', 'failed'],
+        default: 'sent'
     }
 
 }, {timestamps: true})

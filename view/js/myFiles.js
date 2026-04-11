@@ -13,19 +13,19 @@ const Toast = new Notyf({
 
 const uploadFile = async (e) => {
     e.preventDefault()
+    const form = e.target
     const uploadButton = document.getElementById('upload-btn')
     const fileInput = document.getElementById('file-input')
+    const progressbar = document.getElementById('progressbar')
+    const progressLabel = document.getElementById('progressLabel')
     try
     {
-        const form = e.target
-        const progressbar = document.getElementById('progressbar')
-        const progressLabel = document.getElementById('progressLabel')
         const formdata = new FormData(form)
 
         const file = formdata.get('myFile')
         const size = ((file.size / 1024)/1024).toFixed(1)
-        if(size > 200)
-            return Toast.error('File is too large max size 200Mb allowed')
+        if(size > 10)
+            return Toast.error('File is too large max size 10Mb allowed')
         
         const options = {
             onUploadProgress: (e) => {
@@ -47,9 +47,6 @@ const uploadFile = async (e) => {
         fileInput.style.cursor = 'not-allowed'
         await axios.post('/api/file', formdata, options)
         Toast.success(`File uploaded!`)
-        progressbar.style.width = 0
-        progressLabel.textContent = '0%'
-        form.reset()
         toggleDrawer()
         fetchFiles()
     }
@@ -62,6 +59,9 @@ const uploadFile = async (e) => {
         uploadButton.style.cursor = 'default'
         fileInput.disabled = false
         fileInput.style.cursor = 'default'
+        form.reset()
+        progressbar.style.width = 0
+        progressLabel.textContent = '0%'
     }
 }
 
@@ -121,18 +121,68 @@ const fetchFiles = async () => {
             return
         }
         data.forEach(file => {
-
             const fileIcon = {
-                'pdf': 'ri-file-pdf-line text-rose-400',
-                'jpg': 'ri-image-line text-blue-400',
-                'jpeg': 'ri-image-line text-blue-400',
-                'png': 'ri-image-line text-blue-400',
-                'mp4': 'ri-video-line text-purple-400',
-                'mp3': 'ri-music-line text-green-400',
-                'doc': 'ri-file-word-line text-blue-500',
-                'docx': 'ri-file-word-line text-blue-500',
-                'zip': 'ri-file-zip-line text-amber-400',
-            }[file.type.toLowerCase()] || 'ri-file-line text-gray-400';
+        // images
+        'jpg':  'ri-image-line text-blue-400',
+        'jpeg': 'ri-image-line text-blue-400',
+        'png':  'ri-image-line text-blue-400',
+        'gif':  'ri-image-line text-blue-400',
+        'svg':  'ri-image-line text-blue-400',
+        'webp': 'ri-image-line text-blue-400',
+
+        // documents
+        'pdf':  'ri-file-pdf-line text-rose-400',
+        'doc':  'ri-file-word-line text-blue-500',
+        'docx': 'ri-file-word-line text-blue-500',
+        'xls':  'ri-file-excel-line text-green-600',
+        'xlsx': 'ri-file-excel-line text-green-600',
+        'ppt':  'ri-file-ppt-line text-orange-500',
+        'pptx': 'ri-file-ppt-line text-orange-500',
+        'txt':  'ri-file-text-line text-gray-400',
+        'csv':  'ri-file-chart-line text-green-500',
+
+        // video
+        'mp4':  'ri-video-line text-purple-400',
+        'mkv':  'ri-video-line text-purple-400',
+        'mov':  'ri-video-line text-purple-400',
+        'avi':  'ri-video-line text-purple-400',
+        'webm': 'ri-video-line text-purple-400',
+
+        // audio
+        'mp3':  'ri-music-line text-green-400',
+        'wav':  'ri-music-line text-green-400',
+        'aac':  'ri-music-line text-green-400',
+        'flac': 'ri-music-line text-green-400',
+
+        // archives
+        'zip':  'ri-file-zip-line text-amber-400',
+        'rar':  'ri-file-zip-line text-amber-400',
+        '7z':   'ri-file-zip-line text-amber-400',
+        'tar':  'ri-file-zip-line text-amber-400',
+        'gz':   'ri-file-zip-line text-amber-400',
+
+        // code
+        'js':   'ri-javascript-line text-yellow-400',
+        'ts':   'ri-code-line text-blue-400',
+        'html': 'ri-html5-line text-orange-400',
+        'css':  'ri-css3-line text-blue-400',
+        'json': 'ri-braces-line text-gray-500',
+        'xml':  'ri-code-line text-gray-500',
+        'py':   'ri-code-line text-blue-400',
+        'java': 'ri-code-line text-red-400',
+        'cpp':  'ri-code-line text-blue-600',
+        'c':    'ri-code-line text-blue-600',
+
+        // executables — show a warning color since these can be dangerous
+        'exe':  'ri-terminal-box-line text-red-500',
+        'msi':  'ri-terminal-box-line text-red-500',
+        'dmg':  'ri-terminal-box-line text-red-500',
+        'apk':  'ri-android-line text-green-500',
+
+        // misc
+        'iso':  'ri-disc-line text-gray-500',
+        'torrent': 'ri-download-line text-gray-400',
+    }[file.type.toLowerCase()] || 'ri-file-line text-gray-400';
 
             const size = file.size < 1024 * 1024
                 ? (file.size / 1024).toFixed(1) + ' KB'
@@ -155,7 +205,7 @@ const fetchFiles = async () => {
             <td class="text-sm pr-4">${date}</td>
             <td class="pr-4">
                 <div class="flex gap-1.5">
-                    <button onclick="deleteFile('${file._id}', this)" 
+                    <button onclick="deleteFile('${file._id}', '${file.isShared}', '${file.filename}', '${file.type}', this)" 
                         class="p-1.5 rounded-lg bg-rose-50 text-rose-400 hover:bg-rose-100 transition" title="Delete">
                         <i class="ri-delete-bin-4-line text-sm"></i>
                     </button>
@@ -189,10 +239,11 @@ const fetchFiles = async () => {
             </div>
 
             <div class="flex justify-end gap-1.5 pt-2.5 border-t border-gray-100">
-                <button onclick="deleteFile('${file._id}', this)" 
+                <button onclick="deleteFile('${file._id}', '${file.isShared}', '${file.filename}', '${file.type}',  this)" 
                     class="p-2 rounded-lg bg-rose-50 text-rose-400 hover:bg-rose-100 transition">
                     <i class="ri-delete-bin-4-line text-sm"></i>
                 </button>
+                
                 <button onclick="downloadFile('${file._id}', '${file.filename}', this)" 
                     class="p-2 rounded-lg bg-green-50 text-green-500 hover:bg-green-100 transition">
                     <i class="ri-download-line text-sm"></i>
@@ -208,6 +259,7 @@ const fetchFiles = async () => {
 
         tbody.innerHTML = tableUI;
         cardContainer.innerHTML = cardUI;
+
     }
     catch(err)
     {
@@ -216,31 +268,36 @@ const fetchFiles = async () => {
     }
 }
 
-const deleteFile = async (id, button) => {
+const deleteFile = async (id, isShared, filename, ext, button) => {
+
    try
    {
-     button.innerHTML = `<i class="fa fa-spinner fa-spin"></i>`
-     button.disabled = true
-     const options = {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-     }
-     await axios.delete(`/api/file/${id}`, options)
-     Toast.success(`File deleted!`)
-     fetchFiles()
-   }
-   catch(err){
-     console.log(err.response ? err.response.data.message : err.message);
-     console.log(err.message);
-     console.log(err);
-     Toast.error(`Delete Failed!`)
-   }
-   finally
-    {
-        button.innerHTML = `<i class="ri-download-line"></i>`
-        button.disabled = false
+        const result = isShared === 'true' ? await openSharedFileDeleteConfirmModal(filename, ext) : await openConfirmDelete(filename, ext)
+
+        if(result){
+            button.innerHTML = `<i class="fa fa-spinner fa-spin"></i>`
+            button.disabled = true
+            const options = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+            }
+            await axios.delete(`/api/file/${id}?force=true`, options)
+            Toast.success(`File deleted!`)
+            fetchFiles()
+        }   
     }
+    catch(err){
+        console.log(err.response ? err.response.data.message : err.message);
+        console.log(err.message);
+        console.log(err);
+        Toast.error(`Delete Failed!`)
+    }
+    finally
+        {
+            button.innerHTML = `<i class="ri-delete-bin-4-line text-sm"></i>`
+            button.disabled = false
+        }
 }
 
 const downloadFile = async (id, filename, button) => {
@@ -300,8 +357,183 @@ const openModal = (id, filename, ext, size) => {
                     </button>    
                 </form>
             `
-        });
+    });
 }
+
+const openSharedFileDeleteConfirmModal = (filename, ext) => {
+    return new Promise((resolve) => {
+        Swal.fire({
+                showConfirmButton: false,
+                customClass: { popup: '!p-0 !rounded-xl !overflow-hidden !w-[420px]' },
+                html: `
+                <div class='text-left'>
+
+                    <div class='flex items-center justify-between px-5 py-4 border-b border-gray-100'>
+                        <div class='flex items-center gap-2.5'>
+                            <div class='w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center'>
+                                <i class='ri-delete-bin-line text-rose-500 text-base'></i>
+                            </div>
+                            <h1 class='text-[15px] font-semibold text-gray-800'>Delete file</h1>
+                        </div>
+                        <button id='close-btn' type='button' class='w-7 h-7 flex items-center justify-center rounded-full hover:bg-gray-100 transition text-gray-400 hover:text-gray-600 hover:cursor-pointer'>
+                            <i class='ri-close-line text-base'></i>
+                        </button>
+                    </div>
+
+                    <div class='px-5 py-5 space-y-4'>
+
+                        <!-- file info pill -->
+                        <div class='flex items-center gap-2.5 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5'>
+                            <i class='ri-file-line text-gray-400 text-base'></i>
+                            <span class='text-sm text-gray-700 font-medium truncate'>${filename}.${ext}</span>
+                            <span class='ml-auto text-xs bg-white border border-gray-200 text-gray-500 px-2 py-0.5 rounded-md uppercase flex-shrink-0'>${ext}</span>
+                        </div>
+
+                        <!-- warning -->
+                        <div class='flex gap-2.5 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2.5'>
+                            <i class='ri-error-warning-line text-amber-500 text-base flex-shrink-0 mt-0.5'></i>
+                            <p class='text-sm text-amber-700 leading-relaxed'>This file has been shared. Deleting it will break the recipient's download link.</p>
+                        </div>
+
+                        <p class='text-sm text-gray-500'>Are you sure you want to permanently delete this file?</p>
+                    </div>
+
+                    <!-- footer -->
+                    <div class='flex items-center justify-end gap-2 px-5 py-4 border-t border-gray-100 bg-gray-50'>
+                        <button 
+                            id='cancel-delete-btn'
+                            type='button' 
+                            class='px-4 py-2 rounded-lg text-sm font-medium text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 hover:cursor-pointer transition'>
+                            Cancel
+                        </button>
+                        <button 
+                            id='confirm-delete-btn'
+                            type='button' 
+                            class='px-4 py-2 rounded-lg text-sm font-medium text-white bg-rose-500 hover:bg-rose-600 hover:cursor-pointer transition'>
+                            Yes, delete it
+                        </button>
+                    </div>
+                </div>
+            `
+        })
+
+        setTimeout(() => {
+
+                const confirmBtn = document.getElementById('confirm-delete-btn');
+                const cancelBtn = document.getElementById('cancel-delete-btn');
+                const closeBtn = document.getElementById('close-btn');
+
+                if (confirmBtn) {
+                    confirmBtn.onclick = () => {
+                        Swal.close();
+                        resolve(true);   // ✅ works
+                    };
+                }
+
+                if (cancelBtn) {
+                    cancelBtn.onclick = () => {
+                        Swal.close();
+                        resolve(false); // ✅ works
+                    };
+                }
+
+                if (closeBtn) {
+                    closeBtn.onclick = () => {
+                        Swal.close();
+                        resolve(false); // ✅ works
+                    };
+                }
+
+
+            }, 0);
+    
+    })
+}
+
+const openConfirmDelete = (filename, ext) => {
+    return new Promise((resolve) => {
+        Swal.fire({
+                showConfirmButton: false,
+                customClass: { popup: '!p-0 !rounded-xl !overflow-hidden !w-[420px]' },
+                html: `
+                <div class='text-left'>
+
+                    <div class='flex items-center justify-between px-5 py-4 border-b border-gray-100'>
+                        <div class='flex items-center gap-2.5'>
+                            <div class='w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center'>
+                                <i class='ri-delete-bin-line text-rose-500 text-base'></i>
+                            </div>
+                            <h1 class='text-[15px] font-semibold text-gray-800'>Delete file</h1>
+                        </div>
+                        <button id='close-btn' type='button' class='w-7 h-7 flex items-center justify-center rounded-full hover:bg-gray-100 transition text-gray-400 hover:text-gray-600 hover:cursor-pointer'>
+                            <i class='ri-close-line text-base'></i>
+                        </button>
+                    </div>
+
+                    <div class='px-5 py-5 space-y-4'>
+
+                        <!-- file info pill -->
+                        <div class='flex items-center gap-2.5 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5'>
+                            <i class='ri-file-line text-gray-400 text-base'></i>
+                            <span class='text-sm text-gray-700 font-medium truncate'>${filename}.${ext}</span>
+                            <span class='ml-auto text-xs bg-white border border-gray-200 text-gray-500 px-2 py-0.5 rounded-md uppercase flex-shrink-0'>${ext}</span>
+                        </div>
+
+                        <p class='text-sm text-gray-500'>Are you sure you want to permanently delete this file?</p>
+                    </div>
+
+                    <!-- footer -->
+                    <div class='flex items-center justify-end gap-2 px-5 py-4 border-t border-gray-100 bg-gray-50'>
+                        <button 
+                            id='cancel-delete-btn' 
+                            type='button' 
+                            class='px-4 py-2 rounded-lg text-sm font-medium text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 hover:cursor-pointer transition'>
+                            Cancel
+                        </button>
+                        <button 
+                            id='confirm-delete-btn'
+                            type='button' 
+                            class='px-4 py-2 rounded-lg text-sm font-medium text-white bg-rose-500 hover:bg-rose-600 hover:cursor-pointer transition'>
+                            Yes, delete it
+                        </button>
+                    </div>
+                </div>
+            `
+        })
+
+        setTimeout(() => {
+
+            const confirmBtn = document.getElementById('confirm-delete-btn');
+            const cancelBtn = document.getElementById('cancel-delete-btn');
+            const closeBtn = document.getElementById('close-btn');
+
+            if (confirmBtn) {
+                confirmBtn.onclick = () => {
+                    Swal.close();
+                    resolve(true);   // ✅ works
+                };
+            }
+
+            if (cancelBtn) {
+                cancelBtn.onclick = () => {
+                    Swal.close();
+                    resolve(false); // ✅ works
+                };
+            }
+
+            if (closeBtn) {
+                closeBtn.onclick = () => {
+                    Swal.close();
+                    resolve(false); // ✅ works
+                };
+            }
+
+
+        }, 0);
+
+    })
+}
+
 
 const shareFile = async (id, filename, ext, size, e) => {
     

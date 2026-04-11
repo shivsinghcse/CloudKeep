@@ -77,22 +77,79 @@ const fetchHistory = async() => {
         data.forEach((item, index) => {
 
     const fileIcon = {
-        'pdf': 'ri-file-pdf-line text-rose-400',
-        'jpg': 'ri-image-line text-blue-400',
+        // images
+        'jpg':  'ri-image-line text-blue-400',
         'jpeg': 'ri-image-line text-blue-400',
-        'png': 'ri-image-line text-blue-400',
-        'mp4': 'ri-video-line text-purple-400',
-        'mp3': 'ri-music-line text-green-400',
-        'doc': 'ri-file-word-line text-blue-500',
-        'docx': 'ri-file-word-line text-blue-500',
-        'zip': 'ri-file-zip-line text-amber-400',
-    }[item.file.type?.toLowerCase()] || 'ri-file-line text-gray-400';
+        'png':  'ri-image-line text-blue-400',
+        'gif':  'ri-image-line text-blue-400',
+        'svg':  'ri-image-line text-blue-400',
+        'webp': 'ri-image-line text-blue-400',
 
-    const size = item.file.size < 1024 * 1024
-        ? (item.file.size / 1024).toFixed(1) + ' KB'
-        : (item.file.size / (1024 * 1024)).toFixed(1) + ' MB';
+        // documents
+        'pdf':  'ri-file-pdf-line text-rose-400',
+        'doc':  'ri-file-word-line text-blue-500',
+        'docx': 'ri-file-word-line text-blue-500',
+        'xls':  'ri-file-excel-line text-green-600',
+        'xlsx': 'ri-file-excel-line text-green-600',
+        'ppt':  'ri-file-ppt-line text-orange-500',
+        'pptx': 'ri-file-ppt-line text-orange-500',
+        'txt':  'ri-file-text-line text-gray-400',
+        'csv':  'ri-file-chart-line text-green-500',
+
+        // video
+        'mp4':  'ri-video-line text-purple-400',
+        'mkv':  'ri-video-line text-purple-400',
+        'mov':  'ri-video-line text-purple-400',
+        'avi':  'ri-video-line text-purple-400',
+        'webm': 'ri-video-line text-purple-400',
+
+        // audio
+        'mp3':  'ri-music-line text-green-400',
+        'wav':  'ri-music-line text-green-400',
+        'aac':  'ri-music-line text-green-400',
+        'flac': 'ri-music-line text-green-400',
+
+        // archives
+        'zip':  'ri-file-zip-line text-amber-400',
+        'rar':  'ri-file-zip-line text-amber-400',
+        '7z':   'ri-file-zip-line text-amber-400',
+        'tar':  'ri-file-zip-line text-amber-400',
+        'gz':   'ri-file-zip-line text-amber-400',
+
+        // code
+        'js':   'ri-javascript-line text-yellow-400',
+        'ts':   'ri-code-line text-blue-400',
+        'html': 'ri-html5-line text-orange-400',
+        'css':  'ri-css3-line text-blue-400',
+        'json': 'ri-braces-line text-gray-500',
+        'xml':  'ri-code-line text-gray-500',
+        'py':   'ri-code-line text-blue-400',
+        'java': 'ri-code-line text-red-400',
+        'cpp':  'ri-code-line text-blue-600',
+        'c':    'ri-code-line text-blue-600',
+
+        // executables — show a warning color since these can be dangerous
+        'exe':  'ri-terminal-box-line text-red-500',
+        'msi':  'ri-terminal-box-line text-red-500',
+        'dmg':  'ri-terminal-box-line text-red-500',
+        'apk':  'ri-android-line text-green-500',
+
+        // misc
+        'iso':  'ri-disc-line text-gray-500',
+        'torrent': 'ri-download-line text-gray-400',
+    }[item.type?.toLowerCase()] || 'ri-file-line text-gray-400';
+
+    const size = item.size < 1024 * 1024
+        ? (item.size / 1024).toFixed(1) + ' KB'
+        : (item.size / (1024 * 1024)).toFixed(1) + ' MB';
 
     const date = moment(item.createdAt).format('DD MMM YYYY hh:mm A');
+
+    const statusBadge = {
+        'sent':      'bg-green-50 text-green-600',
+        'failed':    'bg-red-50 text-red-500',
+        'delivered': 'bg-blue-50 text-blue-500',
+    }[item.status] || 'bg-gray-50 text-gray-400'
 
     // TABLE (desktop)
     tableUI += `
@@ -100,7 +157,7 @@ const fetchHistory = async() => {
             <td class="py-3.5 pl-6 pr-4">
                 <div class="flex items-center gap-2.5">
                     <i class="${fileIcon} text-base"></i>
-                    <span class="text-gray-700 text-sm font-medium capitalize">${item.file.filename}</span>
+                    <span class="text-gray-700 text-sm font-medium capitalize">${item.filename}</span>
                 </div>
             </td>
             <td class="pr-4">
@@ -114,6 +171,7 @@ const fetchHistory = async() => {
             </td>
             <td class="text-sm pr-4">${size}</td>
             <td class="text-sm pr-4 whitespace-nowrap">${date}</td>
+            <td class="text-xs px-2 py-0.5 rounded-md font-medium ${statusBadge} capitalize">${item.status}</td>
         </tr>
     `;
 

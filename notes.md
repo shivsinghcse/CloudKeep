@@ -97,19 +97,40 @@ module.exports = AuthMiddleware
 - jwt.verify is synchronous
 
 
-# Day-41 AWS
+# Day-41 aws static deployment with ec2 route53 and ssl
 - AWS (Amazon web services)
 - we generally deploy node.js project on cloud
-- to deploy node.js website we need VPS (virtual private server : jiska admin aur root user aap he honge)
-- aws has lots of services for different tasks for vps we will use ec2
+- to deploy node.js website we need `VPS` (virtual private server : jiska admin aur root user aap he honge)
+- aws has lots of services for different tasks for `vps` we will use `ec2` (it is a hardware to process code)
 
-1. ports allow - 80(http), 443(https), 22(ssh) -> security group
+- choose data center - mumbai, india if your user are mainly from india or nearest countries
+
+1. when we took vps so 1st on that vps we allow some ports : ports allow - 80(http), 443(https) [http and https to allow request response in browser (so user can access website)], 22(ssh) -> security group[to install any software in our vps(cpu) like filezilla and putty]
+    - security group naming: appname-sg
+    - description: Allow ssh http https
+    - inbound rule add : type --> ssh, http, https source-type--> anywhere IPv4 (but in ssh my IP this is dynamic)
+
 2. instance (cpu) setup
+    - name: webappname
+    - OS:
+        - .net -> windows
+        - robotics --> mac
+        - for other --> linux (ubntu for medium range and debian for enterprise) 
+        - create key pair is a type of security key which helps to login in server to install server. name: appname-ssh-key,  format: .ppk and save it somewhere
+        - select security group
+        - configure storage (harddisk) max we take 20GB which is huge for code
+        - launch instance
+        - next we have to create server this cpu
+            - nginx, nodejs, tomcat, apache
+
 3. Login using putty
 	username - ubuntu
 
 4. Update dependency
-	sudo apt update
+	- `sudo apt update`
+    - sudo means root user
+    - apt is dependency management tool like linux like npm
+
 
 5. Install nginx
 	sudo apt install nginx
@@ -117,24 +138,33 @@ module.exports = AuthMiddleware
 6. How to allow permission
 	sudo chown ubuntu /var/www/html
 
+- to connect the domain we use Route53 service (it is a dns management service) it connect hosting to domain
+    - search route53
+    - goto hosted zone
+    - domainname --> create
+    - connect dns
+    - create recorde
+        - A record
+        - CNAME record for redirect
 7. Get free ssl
 sudo apt install certbot python3-certbot-nginx
-sudo certbot --nginx -d ersaurav.com -d www.ersaurav.com
-sudo certbot renew --dry-run1. ports allow - 80(http), 443(https), 22(ssh) -> security group
-2. instance setup
-3. Login using putty
-	username - ubuntu
-
-4. Update dependency
-	sudo apt update
-
-5. Install nginx
-	sudo apt install nginx
-
-6. How to allow permission
-	sudo chown ubuntu /var/www/html
-
-7. Get free ssl
-sudo apt install certbot python3-certbot-nginx
-sudo certbot --nginx -d ersaurav.com -d www.ersaurav.com
+sudo certbot --nginx -d ersaurav.com -d www.ersaurav.com (it will expire after 3 months to renew)
 sudo certbot renew --dry-run
+
+
+shivsinghcse@gmail.com
+Teratera@13
+
+# Day-42 NodeJS aws deploy
+- ec2 (elastic compute cloud)
+- route53 - dns management
+- security group -> it used to allow port (80, 443, 22 - for static website)
+- filezilla and putty establish connection through ssh
+- ec2 is free (upto 700 hrs free) but security group and route53 are not free
+- for code we use use ec2 and for binary files use s3
+
+- inbound rule means rule of request
+### deploy nodejs website on ec2
+1. allow ports using security group
+2. setup vps using ec3
+ 

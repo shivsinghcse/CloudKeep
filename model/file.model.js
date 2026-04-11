@@ -35,6 +35,10 @@ const fileSchema = new Schema({
     public_id: {
         type: String,
         required: true
+    }, 
+    isShared: {
+        type: Boolean,
+        default: false
     }
 }, {timestamps: true})
 
