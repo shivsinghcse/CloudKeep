@@ -184,7 +184,7 @@ const fetchHistory = async() => {
                     <i class="${fileIcon} text-lg"></i>
                     <span class="font-medium text-gray-700 text-sm capitalize">${item.file.filename}</span>
                 </div>
-                <span class="text-xs bg-violet-50 text-violet-500 px-2 py-1 rounded-md font-medium">Shared</span>
+                <span class="text-xs px-2 py-0.5 rounded-md font-medium ${statusBadge} capitalize">${item.status}</span>
             </div>
 
             <div class="flex items-center justify-between">
