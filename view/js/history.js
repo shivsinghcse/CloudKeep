@@ -184,7 +184,7 @@ const fetchHistory = async() => {
             <div class="flex justify-between items-start">
                 <div class="flex items-center gap-2">
                     <i class="${fileIcon} text-lg"></i>
-                    <span class="font-medium text-gray-700 text-sm capitalize">${item.file.filename}</span>
+                    <span class="font-medium text-gray-700 text-sm capitalize">${item.filename}</span>
                 </div>
                 <span class="text-xs px-2 py-0.5 rounded-md font-medium ${statusBadge} capitalize">${item.status}</span>
             </div>
